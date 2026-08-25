@@ -735,6 +735,12 @@ function updateWorkoutPlan() {
 
 document.getElementById("sessionLength").addEventListener("change", updateBodyMetrics);
 document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
+    ["sex","age","height","currentWeight","activityLevel","trainingGoal"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", updateNutrition);
+        document.getElementById(id).addEventListener("change", updateNutrition);
+    });
+
 
 /* ============================================================
    WEEKLY EVALUATION ENGINE
@@ -814,6 +820,58 @@ document.getElementById("addWeekBtn").addEventListener("click", () => {
 });
 
 document.getElementById("weeklySelector").addEventListener("change", renderWeeklyPanel);
+/* ============================================================
+   NUTRITION CALCULATOR ENGINE
+   ============================================================ */
+
+function updateNutrition() {
+    const sex = document.getElementById("sex").value;
+    const age = parseFloat(document.getElementById("age").value) || 0;
+    const height = parseFloat(document.getElementById("height").value) || 0;
+    const weight = parseFloat(document.getElementById("currentWeight").value) || 0;
+    const activity = document.getElementById("activityLevel").value;
+    const goal = document.getElementById("trainingGoal").value;
+
+    if (!sex || !age || !height || !weight || !activity) return;
+
+    // BMR (Mifflin-St Jeor)
+    let bmr = 0;
+    if (sex === "male") {
+        bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) + 5;
+    } else {
+        bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) - 161;
+    }
+
+    // Activity multiplier
+    const activityMap = {
+        sedentary: 1.2,
+        light: 1.375,
+        moderate: 1.55,
+        intense: 1.725,
+        extreme: 1.9
+    };
+
+    const tdee = bmr * (activityMap[activity] || 1.2);
+
+    // Goal adjustment
+    let targetCalories = tdee;
+    if (goal === "fatloss") targetCalories -= 300;
+    if (goal === "muscle") targetCalories += 300;
+
+    // Macros
+    const protein = weight * 0.8;
+    const fats = (targetCalories * 0.25) / 9;
+    const carbs = (targetCalories - (protein * 4) - (fats * 9)) / 4;
+
+    // Output
+    document.getElementById("bmrOutput").textContent = Math.round(bmr);
+    document.getElementById("tdeeOutput").textContent = Math.round(tdee);
+    document.getElementById("calorieTargetOutput").textContent = Math.round(targetCalories);
+
+    document.getElementById("proteinTarget").textContent = Math.round(protein) + " g";
+    document.getElementById("fatTarget").textContent = Math.round(fats) + " g";
+    document.getElementById("carbTarget").textContent = Math.round(carbs) + " g";
+}
 
 /* ============================================================
    MONTHLY TRAINER NOTES ENGINE

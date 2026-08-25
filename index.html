@@ -842,7 +842,42 @@ function generateMonthlyWeeks(count = 4) {
     if (!currentClient) return;
 
     if (!clients[currentClient].monthly) {
-        clients[currentClient].monthly =
+        clients[currentClient].monthly = [];
+    }
+
+    const existing = clients[currentClient].monthly.length;
+    for (let i = existing; i < existing + count; i++) {
+        clients[currentClient].monthly.push({
+            label: `Week ${i + 1}`,
+            focus: "",
+            wins: "",
+            improvements: ""
+        });
+    }
+
+    const selector = document.getElementById("monthlySelector");
+    selector.innerHTML = "";
+    clients[currentClient].monthly.forEach((w, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = w.label;
+        selector.appendChild(opt);
+    });
+
+    selector.value = clients[currentClient].monthly.length - 1;
+    renderMonthlyPanel();
+}
+
+document.getElementById("generateMonthlyBtn").addEventListener("click", () => {
+    generateMonthlyWeeks(4);
+});
+
+document.getElementById("addMonthlyWeekBtn").addEventListener("click", () => {
+    generateMonthlyWeeks(1);
+});
+
+document.getElementById("monthlySelector").addEventListener("change", renderMonthlyPanel);
+
             /* ============================================================
    ATTENDANCE SUMMARY ENGINE
    ============================================================ */

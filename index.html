@@ -236,7 +236,11 @@
     </div>
 
     <table>
-        <tr><th>Session Length (minutes)</th><td><input id="sessionLength" type="number"></td></tr>
+       <select id="sessionLength">
+    <option value="30">30 minutes</option>
+    <option value="60">60 minutes</option>
+</select>
+
         <tr><th>Sessions Per Week</th><td><input id="sessionsPerWeek" type="number"></td></tr>
     </table>
 </div>
@@ -611,6 +615,21 @@ function updateWeeksToGoal() {
 
     document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
     document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
+    document.getElementById("sessionLength").addEventListener("change", updateBodyMetrics);
+    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
+
+// Weekly weight‑loss rate based on session length
+const weeklyRate = sessionLength === 60 ? 1.25 : 0.75;
+const weightToLose = cw - dw;
+const weeks = weightToLose / weeklyRate;
+
+document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
+const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 3;
+const totalSessions = weeks * spw;
+
+document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
+
+
 }
 
 function updateWorkoutPlan() {

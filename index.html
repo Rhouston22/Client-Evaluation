@@ -573,24 +573,31 @@ function updateDashboard() {
         });
     });
 }
+
+document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
 /* ============================================================
    BODY METRICS & WORKOUT COMMITMENT
    ============================================================ */
 
 function updateBodyMetrics() {
-    const h = parseFloat(document.getElementById("height").value);
-    const cw = parseFloat(document.getElementById("currentWeight").value);
-    const dw = parseFloat(document.getElementById("desiredWeight").value);
+    const h = parseFloat(document.getElementById("height").value) || 0;
+    const cw = parseFloat(document.getElementById("currentWeight").value) || 0;
+    const dw = parseFloat(document.getElementById("desiredWeight").value) || 0;
+    const bf = parseFloat(document.getElementById("bodyFat").value) || 0;
+    const mp = parseFloat(document.getElementById("musclePercent").value) || 0;
 
-    if (h && cw) {
+    // BMI
+    if (h > 0 && cw > 0) {
         const bmi = (cw / (h * h)) * 703;
         document.getElementById("bmi").textContent = bmi.toFixed(1);
     } else {
         document.getElementById("bmi").textContent = "";
     }
 
-    if (cw && dw && cw > dw) {
-        document.getElementById("weightToLose").textContent = (cw - dw).toFixed(1) + " lbs";
+    // Weight to lose
+    if (cw > 0 && dw > 0 && cw > dw) {
+        document.getElementById("weightToLose").textContent =
+            (cw - dw).toFixed(1) + " lbs";
     } else {
         document.getElementById("weightToLose").textContent = "";
     }
@@ -599,38 +606,35 @@ function updateBodyMetrics() {
 }
 
 function updateWeeksToGoal() {
-    const cw = parseFloat(document.getElementById("currentWeight").value);
-    const dw = parseFloat(document.getElementById("desiredWeight").value);
-    const spw = parseFloat(document.getElementById("sessionsPerWeek").value);
+    const cw = parseFloat(document.getElementById("currentWeight").value) || 0;
+    const dw = parseFloat(document.getElementById("desiredWeight").value) || 0;
+    const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 0;
+    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
 
-    if (!cw || !dw || !spw || cw <= dw) {
+    if (cw <= 0 || dw <= 0 || cw <= dw || spw <= 0) {
         document.getElementById("weeksToGoal").textContent = "";
         document.getElementById("totalSessions").textContent = "";
         return;
     }
 
     const weightToLose = cw - dw;
-    const weeks = weightToLose / 1;
+
+    // Weekly weight‑loss rate based on session length
+    const weeklyRate = sessionLength === 60 ? 1.25 : 0.75;
+
+    const weeks = weightToLose / weeklyRate;
     const totalSessions = weeks * spw;
 
-    document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
-    document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
-    document.getElementById("sessionLength").addEventListener("change", updateBodyMetrics);
-    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
+    document.getElementById("weeksToGoal").textContent =
+        weeks.toFixed(1) + " weeks";
 
-// Weekly weight‑loss rate based on session length
-const weeklyRate = sessionLength === 60 ? 1.25 : 0.75;
-const weightToLose = cw - dw;
-const weeks = weightToLose / weeklyRate;
-
-document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
-const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 3;
-const totalSessions = weeks * spw;
-
-document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
-
-
+    document.getElementById("totalSessions").textContent =
+        Math.round(totalSessions) + " sessions";
 }
+
+/* ============================================================
+   WORKOUT PLAN ENGINE
+   ============================================================ */
 
 function updateWorkoutPlan() {
     const goal = document.getElementById("trainingGoal").value;
@@ -668,10 +672,16 @@ function updateWorkoutPlan() {
     planDiv.innerHTML = text;
 }
 
-["height","currentWeight","desiredWeight","sessionsPerWeek"].forEach(id => {
-    document.getElementById(id).addEventListener("input", updateBodyMetrics);
-});
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
 
+["height","currentWeight","desiredWeight","sessionsPerWeek","sessionLength","bodyFat","musclePercent"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", updateBodyMetrics);
+    });
+
+document.getElementById("sessionLength").addEventListener("change", updateBodyMetrics);
 document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
 
 /* ============================================================

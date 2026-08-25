@@ -389,13 +389,45 @@
 <script>
 window.addEventListener("DOMContentLoaded", function () {
 /* ============================================================
-   TRAINER & CLIENT MANAGEMENT (FULL WORKING VERSION)
+/* ============================================================
+   TRAINER & CLIENT MANAGEMENT (CLEAN + DUPLICATE FEATURE)
    ============================================================ */
 
 let trainers = JSON.parse(localStorage.getItem("crunchTrainers")) || [];
 let clients = JSON.parse(localStorage.getItem("crunchClients")) || {};
 let currentTrainer = null;
 let currentClient = null;
+
+/* ---------------------------
+   CLEAR FORM
+---------------------------- */
+
+function clearClientForm() {
+    const fields = [
+        "name","sex","age","date","trainerNameField",
+        "height","currentWeight","desiredWeight","bodyFat","musclePercent",
+        "sessionLength","sessionsPerWeek","trainingGoal","activityLevel",
+        "trainerSignature"
+    ];
+
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+    });
+
+    // Nutrition outputs
+    ["bmrOutput","tdeeOutput","calorieTargetOutput",
+     "proteinTarget","fatTarget","carbTarget"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "";
+    });
+
+    // Body metrics outputs
+    ["bmi","weightToLose","weeksToGoal","totalSessions"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "";
+    });
+}
 
 /* ---------------------------
    TRAINER MANAGEMENT
@@ -428,11 +460,11 @@ document.getElementById("addTrainerBtn").addEventListener("click", () => {
     }
 
     document.getElementById("newTrainerName").value = "";
-       // Reset everything
     currentClient = null;
+
     clearClientForm();
+    refreshTrainerList();
     refreshClientList();
-});
 });
 
 document.getElementById("removeTrainerBtn").addEventListener("click", () => {
@@ -449,6 +481,10 @@ document.getElementById("removeTrainerBtn").addEventListener("click", () => {
     });
     localStorage.setItem("crunchClients", JSON.stringify(clients));
 
+    currentTrainer = null;
+    currentClient = null;
+
+    clearClientForm();
     refreshTrainerList();
     refreshClientList();
 });
@@ -481,6 +517,7 @@ function refreshClientList() {
         loadClientIntoForm();
     } else {
         currentClient = null;
+        clearClientForm();
     }
 }
 
@@ -488,23 +525,21 @@ document.getElementById("addClientBtn").addEventListener("click", () => {
     const name = document.getElementById("newClientName").value.trim();
     if (!name || !currentTrainer) return;
 
-    if (!clients[name]) {
-        clients[name] = {
-            trainer: currentTrainer,
-            info: {},
-            weekly: [],
-            monthly: [],
-            attendance: {},
-            progress: {},
-            snapshots: []
-        };
-        localStorage.setItem("crunchClients", JSON.stringify(clients));
-    }
+    clients[name] = {
+        trainer: currentTrainer,
+        info: {},
+        weekly: [],
+        monthly: [],
+        attendance: {},
+        progress: {},
+        snapshots: []
+    };
+
+    localStorage.setItem("crunchClients", JSON.stringify(clients));
 
     document.getElementById("newClientName").value = "";
-    refreshClientList();
-    // Reset everything
     currentClient = name;
+
     clearClientForm();
     refreshClientList();
 });
@@ -515,8 +550,27 @@ document.getElementById("deleteClientBtn").addEventListener("click", () => {
     delete clients[currentClient];
     localStorage.setItem("crunchClients", JSON.stringify(clients));
 
-urrentClient = null;
+    currentClient = null;
     clearClientForm();
+    refreshClientList();
+});
+
+/* ---------------------------
+   DUPLICATE CLIENT FEATURE
+---------------------------- */
+
+document.getElementById("duplicateClientBtn").addEventListener("click", () => {
+    if (!currentClient) return;
+
+    const original = clients[currentClient];
+    const newName = currentClient + " (Copy)";
+
+    clients[newName] = JSON.parse(JSON.stringify(original));
+    clients[newName].trainer = currentTrainer;
+
+    localStorage.setItem("crunchClients", JSON.stringify(clients));
+
+    currentClient = newName;
     refreshClientList();
 });
 
@@ -549,6 +603,7 @@ function loadClientIntoForm() {
     document.getElementById("trainerSignature").value = data.signature || "";
 
     updateBodyMetrics();
+    updateNutrition();
 }
 
 /* ---------------------------

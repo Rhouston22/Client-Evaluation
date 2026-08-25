@@ -577,7 +577,6 @@ document.getElementById("duplicateClientBtn").addEventListener("click", () => {
 /* ---------------------------
    LOAD CLIENT INTO FORM
 ---------------------------- */
-
 function loadClientIntoForm() {
     if (!currentClient) return;
 
@@ -602,9 +601,12 @@ function loadClientIntoForm() {
 
     document.getElementById("trainerSignature").value = data.signature || "";
 
+    // ⭐ CRITICAL FIX
     updateBodyMetrics();
     updateNutrition();
 }
+
+
 
 /* ---------------------------
    SAVE CLIENT DATA

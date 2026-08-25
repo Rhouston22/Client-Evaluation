@@ -389,83 +389,132 @@
 <script>
 window.addEventListener("DOMContentLoaded", function () {
 /* ============================================================
-   TRAINER & CLIENT MANAGEMENT
+   TRAINER & CLIENT MANAGEMENT (FULL WORKING VERSION)
    ============================================================ */
 
-let trainers = [];
-let clients = {};
+let trainers = JSON.parse(localStorage.getItem("crunchTrainers")) || [];
+let clients = JSON.parse(localStorage.getItem("crunchClients")) || {};
+let currentTrainer = null;
 let currentClient = null;
 
-/* Populate trainer dropdown */
+/* ---------------------------
+   TRAINER MANAGEMENT
+---------------------------- */
+
 function refreshTrainerList() {
     const sel = document.getElementById("trainerSelect");
     sel.innerHTML = "";
+
     trainers.forEach(t => {
         const opt = document.createElement("option");
         opt.value = t;
         opt.textContent = t;
         sel.appendChild(opt);
     });
+
+    if (trainers.length > 0) {
+        sel.value = trainers[0];
+        currentTrainer = trainers[0];
+    }
 }
 
-/* Populate client dropdown */
-function refreshClientList() {
-    const sel = document.getElementById("clientSelect");
-    sel.innerHTML = "";
-    Object.keys(clients).forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c;
-        sel.appendChild(opt);
-    });
-}
-
-/* Add trainer */
 document.getElementById("addTrainerBtn").addEventListener("click", () => {
     const name = document.getElementById("newTrainerName").value.trim();
     if (!name) return;
-    trainers.push(name);
+
+    if (!trainers.includes(name)) {
+        trainers.push(name);
+        localStorage.setItem("crunchTrainers", JSON.stringify(trainers));
+    }
+
+    document.getElementById("newTrainerName").value = "";
     refreshTrainerList();
+    refreshClientList();
 });
 
-/* Remove trainer */
 document.getElementById("removeTrainerBtn").addEventListener("click", () => {
-    const sel = document.getElementById("trainerSelect").value;
-    trainers = trainers.filter(t => t !== sel);
+    if (!currentTrainer) return;
+
+    trainers = trainers.filter(t => t !== currentTrainer);
+    localStorage.setItem("crunchTrainers", JSON.stringify(trainers));
+
+    // Remove all clients belonging to this trainer
+    Object.keys(clients).forEach(c => {
+        if (clients[c].trainer === currentTrainer) {
+            delete clients[c];
+        }
+    });
+    localStorage.setItem("crunchClients", JSON.stringify(clients));
+
     refreshTrainerList();
+    refreshClientList();
 });
 
-/* Add client */
+document.getElementById("trainerSelect").addEventListener("change", () => {
+    currentTrainer = document.getElementById("trainerSelect").value;
+    refreshClientList();
+});
+
+/* ---------------------------
+   CLIENT MANAGEMENT
+---------------------------- */
+
+function refreshClientList() {
+    const sel = document.getElementById("clientSelect");
+    sel.innerHTML = "";
+
+    Object.keys(clients).forEach(c => {
+        if (clients[c].trainer === currentTrainer) {
+            const opt = document.createElement("option");
+            opt.value = c;
+            opt.textContent = c;
+            sel.appendChild(opt);
+        }
+    });
+
+    if (sel.options.length > 0) {
+        sel.value = sel.options[0].value;
+        currentClient = sel.value;
+        loadClientIntoForm();
+    } else {
+        currentClient = null;
+    }
+}
+
 document.getElementById("addClientBtn").addEventListener("click", () => {
     const name = document.getElementById("newClientName").value.trim();
-    if (!name) return;
+    if (!name || !currentTrainer) return;
 
-    clients[name] = {
-        info: {},
-        weekly: [],
-        monthly: [],
-        attendance: {},
-        progress: {},
-        snapshots: []
-    };
+    if (!clients[name]) {
+        clients[name] = {
+            trainer: currentTrainer,
+            info: {},
+            weekly: [],
+            monthly: [],
+            attendance: {},
+            progress: {},
+            snapshots: []
+        };
+        localStorage.setItem("crunchClients", JSON.stringify(clients));
+    }
 
+    document.getElementById("newClientName").value = "";
     refreshClientList();
 });
 
-/* Delete client */
 document.getElementById("deleteClientBtn").addEventListener("click", () => {
-    const sel = document.getElementById("clientSelect").value;
-    delete clients[sel];
+    if (!currentClient) return;
+
+    delete clients[currentClient];
+    localStorage.setItem("crunchClients", JSON.stringify(clients));
+
     refreshClientList();
 });
 
-/* Load selected client */
-document.getElementById("clientSelect").addEventListener("change", () => {
-    currentClient = document.getElementById("clientSelect").value;
-    loadClientIntoForm();
-});
+/* ---------------------------
+   LOAD CLIENT INTO FORM
+---------------------------- */
 
-/* Load client data into form */
 function loadClientIntoForm() {
     if (!currentClient) return;
 
@@ -489,9 +538,14 @@ function loadClientIntoForm() {
     document.getElementById("activityLevel").value = data.activityLevel || "";
 
     document.getElementById("trainerSignature").value = data.signature || "";
+
+    updateBodyMetrics();
 }
 
-/* Save client data */
+/* ---------------------------
+   SAVE CLIENT DATA
+---------------------------- */
+
 document.getElementById("saveClientDataBtn").addEventListener("click", () => {
     if (!currentClient) return;
 
@@ -515,14 +569,12 @@ document.getElementById("saveClientDataBtn").addEventListener("click", () => {
     localStorage.setItem("crunchClients", JSON.stringify(clients));
 });
 
-/* Load all clients from storage */
-document.getElementById("loadClientDataBtn").addEventListener("click", () => {
-    const stored = localStorage.getItem("crunchClients");
-    if (stored) {
-        clients = JSON.parse(stored);
-        refreshClientList();
-    }
-});
+/* ---------------------------
+   INITIAL LOAD
+---------------------------- */
+
+refreshTrainerList();
+refreshClientList();
 
 /* ============================================================
    DASHBOARD SNAPSHOT SYSTEM
@@ -685,72 +737,161 @@ document.getElementById("sessionLength").addEventListener("change", updateBodyMe
 document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
 
 /* ============================================================
-   NUTRITION CALCULATOR
+   WEEKLY EVALUATION ENGINE
    ============================================================ */
 
-function updateNutrition() {
-    const sex = document.getElementById("sex").value;
-    const age = parseFloat(document.getElementById("age").value);
-    const h = parseFloat(document.getElementById("height").value);
-    const cw = parseFloat(document.getElementById("currentWeight").value);
-    const activity = parseFloat(document.getElementById("activityLevel").value);
+function renderWeeklyPanel() {
+    const panel = document.getElementById("weeklyPanel");
+    const selector = document.getElementById("weeklySelector");
+    panel.innerHTML = "";
 
-    if (!sex || !age || !h || !cw || !activity) {
-        document.getElementById("bmr").textContent = "";
-        document.getElementById("tdee").textContent = "";
-        document.getElementById("targetCalories").textContent = "";
-        document.getElementById("proteinGrams").textContent = "";
-        document.getElementById("carbsGrams").textContent = "";
-        document.getElementById("fatsGrams").textContent = "";
-        document.getElementById("nutritionPlan").innerHTML = "";
-        return;
-    }
+    const weekIndex = parseInt(selector.value);
+    if (isNaN(weekIndex) || !currentClient) return;
 
-    const heightCm = h * 2.54;
-    const weightKg = cw / 2.205;
+    const clientWeekly = clients[currentClient].weekly || [];
+    if (!clientWeekly[weekIndex]) return;
 
-    let bmr;
-    if (sex === "female") {
-        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
-    } else {
-        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
-    }
+    const data = clientWeekly[weekIndex];
 
-    const tdee = bmr * activity;
-
-    let targetCalories = tdee;
-    const goal = document.getElementById("trainingGoal").value;
-
-    if (goal === "fatloss") targetCalories -= 300;
-    if (goal === "muscle") targetCalories += 200;
-
-    const protein = weightKg * 2.0;
-    const fats = weightKg * 0.8;
-    const proteinCalories = protein * 4;
-    const fatsCalories = fats * 9;
-    const carbsCalories = targetCalories - proteinCalories - fatsCalories;
-    const carbs = carbsCalories / 4;
-
-    document.getElementById("bmr").textContent = Math.round(bmr) + " kcal";
-    document.getElementById("tdee").textContent = Math.round(tdee) + " kcal";
-    document.getElementById("targetCalories").textContent = Math.round(targetCalories) + " kcal";
-    document.getElementById("proteinGrams").textContent = Math.round(protein) + " g";
-    document.getElementById("carbsGrams").textContent = Math.round(carbs) + " g";
-    document.getElementById("fatsGrams").textContent = Math.round(fats) + " g";
-
-    document.getElementById("nutritionPlan").innerHTML = `
-        <strong>Nutrition Summary:</strong><br>
-        • ${Math.round(targetCalories)} kcal/day<br>
-        • Protein: ${Math.round(protein)} g<br>
-        • Carbs: ${Math.round(carbs)} g<br>
-        • Fats: ${Math.round(fats)} g
+    panel.innerHTML = `
+        <table>
+            <tr><th>Week Label</th><td>${data.label}</td></tr>
+            <tr><th>Sessions Scheduled</th><td><input id="w_sessionsScheduled" type="number" value="${data.sessionsScheduled || ""}"></td></tr>
+            <tr><th>Sessions Attended</th><td><input id="w_sessionsAttended" type="number" value="${data.sessionsAttended || ""}"></td></tr>
+            <tr><th>Notes</th><td><textarea id="w_notes">${data.notes || ""}</textarea></td></tr>
+        </table>
+        <button id="w_saveBtn">Save Weekly Data</button>
     `;
+
+    document.getElementById("w_saveBtn").addEventListener("click", () => {
+        data.sessionsScheduled = parseFloat(document.getElementById("w_sessionsScheduled").value) || 0;
+        data.sessionsAttended = parseFloat(document.getElementById("w_sessionsAttended").value) || 0;
+        data.notes = document.getElementById("w_notes").value;
+
+        clients[currentClient].weekly[weekIndex] = data;
+        localStorage.setItem("crunchClients", JSON.stringify(clients));
+        updateAttendanceSummary();
+        updateChart();
+    });
 }
 
-["sex","age","height","currentWeight","activityLevel","trainingGoal"].forEach(id => {
-    document.getElementById(id).addEventListener("input", updateNutrition);
-    document.getElementById(id).addEventListener("change", updateNutrition);
+function generateWeeks(count = 4) {
+    if (!currentClient) return;
+
+    if (!clients[currentClient].weekly) {
+        clients[currentClient].weekly = [];
+    }
+
+    const existing = clients[currentClient].weekly.length;
+    for (let i = existing; i < existing + count; i++) {
+        clients[currentClient].weekly.push({
+            label: `Week ${i + 1}`,
+            sessionsScheduled: 0,
+            sessionsAttended: 0,
+            notes: ""
+        });
+    }
+
+    const selector = document.getElementById("weeklySelector");
+    selector.innerHTML = "";
+    clients[currentClient].weekly.forEach((w, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = w.label;
+        selector.appendChild(opt);
+    });
+
+    selector.value = clients[currentClient].weekly.length - 1;
+    renderWeeklyPanel();
+}
+
+document.getElementById("generateWeeksBtn").addEventListener("click", () => {
+    generateWeeks(4);
 });
+
+document.getElementById("addWeekBtn").addEventListener("click", () => {
+    generateWeeks(1);
+});
+
+document.getElementById("weeklySelector").addEventListener("change", renderWeeklyPanel);
+
+/* ============================================================
+   MONTHLY TRAINER NOTES ENGINE
+   ============================================================ */
+
+function renderMonthlyPanel() {
+    const panel = document.getElementById("monthlyPanel");
+    const selector = document.getElementById("monthlySelector");
+    panel.innerHTML = "";
+
+    const weekIndex = parseInt(selector.value);
+    if (isNaN(weekIndex) || !currentClient) return;
+
+    const clientMonthly = clients[currentClient].monthly || [];
+    if (!clientMonthly[weekIndex]) return;
+
+    const data = clientMonthly[weekIndex];
+
+    panel.innerHTML = `
+        <table>
+            <tr><th>Week Label</th><td>${data.label}</td></tr>
+            <tr><th>Focus</th><td><input id="m_focus" value="${data.focus || ""}"></td></tr>
+            <tr><th>Wins</th><td><textarea id="m_wins">${data.wins || ""}</textarea></td></tr>
+            <tr><th>Improvements</th><td><textarea id="m_improvements">${data.improvements || ""}</textarea></td></tr>
+        </table>
+        <button id="m_saveBtn">Save Monthly Notes</button>
+    `;
+
+    document.getElementById("m_saveBtn").addEventListener("click", () => {
+        data.focus = document.getElementById("m_focus").value;
+        data.wins = document.getElementById("m_wins").value;
+        data.improvements = document.getElementById("m_improvements").value;
+
+        clients[currentClient].monthly[weekIndex] = data;
+        localStorage.setItem("crunchClients", JSON.stringify(clients));
+    });
+}
+
+function generateMonthlyWeeks(count = 4) {
+    if (!currentClient) return;
+
+    if (!clients[currentClient].monthly) {
+        clients[currentClient].monthly = [];
+    }
+
+    const existing = clients[currentClient].monthly.length;
+    for (let i = existing; i < existing + count; i++) {
+        clients[currentClient].monthly.push({
+            label: `Week ${i + 1}`,
+            focus: "",
+            wins: "",
+            improvements: ""
+        });
+    }
+
+    const selector = document.getElementById("monthlySelector");
+    selector.innerHTML = "";
+    clients[currentClient].monthly.forEach((w, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = w.label;
+        selector.appendChild(opt);
+    });
+
+    selector.value = clients[currentClient].monthly.length - 1;
+    renderMonthlyPanel();
+}
+
+document.getElementById("generateMonthlyBtn").addEventListener("click", () => {
+    generateMonthlyWeeks(4);
+});
+
+document.getElementById("addMonthlyWeekBtn").addEventListener("click", () => {
+    generateMonthlyWeeks(1);
+});
+
+document.getElementById("monthlySelector").addEventListener("change", renderMonthlyPanel);
+
 /* ============================================================
    ATTENDANCE SUMMARY ENGINE
    ============================================================ */
@@ -886,7 +1027,6 @@ document.getElementById("exportPDFBtn").addEventListener("click", () => {
 updateDashboard();
 updateAttendanceSummary();
 updateChart();
-
 /* Close DOMContentLoaded wrapper */
 });
 </script>

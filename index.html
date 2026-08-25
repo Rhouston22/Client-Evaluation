@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Crunch Gym Fitness Evaluation System</title>
+<title>Crunch Fitness Evaluation System</title>
 
-<!-- CLEAN & PROFESSIONAL LIGHT THEME -->
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -12,7 +11,6 @@
         margin:20px;
         color:#333;
     }
-
     h1 {
         color:#1f4e79;
         margin-top:10px;
@@ -20,7 +18,14 @@
         letter-spacing:0.5px;
     }
 
-    /* SECTION ICONS */
+    .section {
+        background:#ffffff;
+        padding:22px;
+        margin-bottom:22px;
+        border-radius:10px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    }
+
     .section-title {
         font-size:1.25rem;
         font-weight:600;
@@ -38,27 +43,17 @@
         opacity:0.9;
     }
 
-    .section {
-        background:#ffffff;
-        padding:22px;
-        margin-bottom:22px;
-        border-radius:10px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.08);
-    }
-
     table {
         width:100%;
         border-collapse:collapse;
         margin-top:10px;
     }
-
     th, td {
         border:1px solid #e1e7f0;
         padding:10px;
         font-size:0.95rem;
         vertical-align:top;
     }
-
     th {
         background:#eef3fa;
         font-weight:600;
@@ -73,7 +68,6 @@
         box-sizing:border-box;
         font-size:0.95rem;
     }
-
     textarea {
         min-height:70px;
     }
@@ -91,7 +85,6 @@
         font-weight:600;
         letter-spacing:0.3px;
     }
-
     button:hover {
         background:#163a5c;
     }
@@ -109,7 +102,6 @@
         .logo-wrapper { display:none; }
     }
 
-    /* LOGO */
     .logo-wrapper {
         text-align:center;
         margin-bottom:10px;
@@ -142,7 +134,6 @@
 
 <h1>Trainer & Client Evaluation System</h1>
 
-<!-- TRAINER & CLIENT MANAGEMENT -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/conference-call.png">
@@ -173,7 +164,6 @@
     </div>
 </div>
 
-<!-- DASHBOARD -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/combo-chart.png">
@@ -194,8 +184,7 @@
         <tbody id="dashboardBody"></tbody>
     </table>
 </div>
-
-<!-- CLIENT INFO -->
+<!-- CLIENT INFORMATION -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/user.png">
@@ -203,7 +192,7 @@
     </div>
 
     <table>
-        <tr><th>Name</th><td><input id="name"></td></tr>
+        <tr><th>Client Name</th><td><input id="name"></td></tr>
         <tr><th>Sex</th>
             <td>
                 <select id="sex">
@@ -215,10 +204,11 @@
         </tr>
         <tr><th>Age</th><td><input id="age" type="number"></td></tr>
         <tr><th>Date</th><td><input id="date" type="date"></td></tr>
-        <tr><th>Trainer</th><td><input id="trainerNameField" placeholder="Auto from trainer dropdown"></td></tr>
+        <tr><th>Trainer</th><td><input id="trainerNameField"></td></tr>
     </table>
-</div> 
-    <!-- BODY METRICS -->
+</div>
+
+<!-- BODY METRICS -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/scale.png">
@@ -233,6 +223,8 @@
         <tr><th>Muscle %</th><td><input id="musclePercent" type="number"></td></tr>
         <tr><th>BMI</th><td id="bmi"></td></tr>
         <tr><th>Weight to Lose</th><td id="weightToLose"></td></tr>
+        <tr><th>Weeks to Goal</th><td id="weeksToGoal"></td></tr>
+        <tr><th>Total Sessions Needed</th><td id="totalSessions"></td></tr>
     </table>
 </div>
 
@@ -244,19 +236,8 @@
     </div>
 
     <table>
-        <tr>
-            <th>Session Length</th>
-            <td>
-                <select id="sessionLength">
-                    <option value="">Select</option>
-                    <option value="30">30 Minutes</option>
-                    <option value="60">60 Minutes</option>
-                </select>
-            </td>
-        </tr>
-        <tr><th>Sessions per Week</th><td><input id="sessionsPerWeek" type="number"></td></tr>
-        <tr><th>Estimated Weeks to Goal</th><td id="weeksToGoal"></td></tr>
-        <tr><th>Total Sessions Needed</th><td id="totalSessions"></td></tr>
+        <tr><th>Session Length (minutes)</th><td><input id="sessionLength" type="number"></td></tr>
+        <tr><th>Sessions Per Week</th><td><input id="sessionsPerWeek" type="number"></td></tr>
     </table>
 </div>
 
@@ -264,36 +245,34 @@
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/goal.png">
-        Training Goal & Workout Plan
+        Training Goal
     </div>
 
     <table>
         <tr>
-            <th>Training Goal</th>
+            <th>Goal</th>
             <td>
                 <select id="trainingGoal">
-                    <option value="">Select Goal</option>
-                    <option value="fatloss">Lose Fat</option>
-                    <option value="muscle">Gain Muscle</option>
-                    <option value="recomp">Burn Fat + Gain Muscle</option>
+                    <option value="">Select</option>
+                    <option value="fatloss">Fat Loss</option>
+                    <option value="muscle">Muscle Gain</option>
+                    <option value="recomp">Body Recomposition</option>
                 </select>
             </td>
         </tr>
+        <tr><th>Workout Plan</th><td id="workoutPlan"></td></tr>
     </table>
-
-    <div id="workoutPlan" style="padding:12px; background:#eef3fa; border-radius:8px;"></div>
 </div>
 
-<!-- NUTRITION -->
+<!-- NUTRITION CALCULATOR -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/meal.png">
-        Nutrition Plan & Calorie Calculator
+        Nutrition Calculator
     </div>
 
     <table>
-        <tr>
-            <th>Activity Level</th>
+        <tr><th>Activity Level</th>
             <td>
                 <select id="activityLevel">
                     <option value="">Select</option>
@@ -301,6 +280,7 @@
                     <option value="1.375">Lightly Active</option>
                     <option value="1.55">Moderately Active</option>
                     <option value="1.725">Very Active</option>
+                    <option value="1.9">Extremely Active</option>
                 </select>
             </td>
         </tr>
@@ -310,9 +290,8 @@
         <tr><th>Protein (g)</th><td id="proteinGrams"></td></tr>
         <tr><th>Carbs (g)</th><td id="carbsGrams"></td></tr>
         <tr><th>Fats (g)</th><td id="fatsGrams"></td></tr>
+        <tr><th>Nutrition Plan</th><td id="nutritionPlan"></td></tr>
     </table>
-
-    <div id="nutritionPlan" style="padding:12px; background:#eef3fa; border-radius:8px;"></div>
 </div>
 
 <!-- WEEKLY EVALUATION -->
@@ -322,23 +301,23 @@
         Weekly Evaluation
     </div>
 
-    <button id="generateWeeksBtn">Generate Weeks</button>
-    <button id="addWeekBtn">Add More Weeks</button>
+    <button id="generateWeeksBtn">Generate 4 Weeks</button>
+    <button id="addWeekBtn">Add Week</button>
 
     <label><strong>Select Week:</strong></label>
     <select id="weeklySelector"></select>
 
     <div id="weeklyPanel" style="margin-top:15px;"></div>
-</div> 
-    <!-- MONTHLY TRAINER NOTES -->
+</div>
+<!-- MONTHLY TRAINER NOTES -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/note.png">
         Monthly Trainer Notes
     </div>
 
-    <button id="generateMonthlyBtn">Generate Monthly Weeks</button>
-    <button id="addMonthlyWeekBtn">Add More Monthly Weeks</button>
+    <button id="generateMonthlyBtn">Generate 4 Weeks</button>
+    <button id="addMonthlyWeekBtn">Add Week</button>
 
     <label><strong>Select Week:</strong></label>
     <select id="monthlySelector"></select>
@@ -350,13 +329,13 @@
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/attendance.png">
-        Client Attendance Summary
+        Attendance Summary
     </div>
 
     <table>
-        <tr><th>Average Attendance %</th><td id="attendancePercent"></td></tr>
         <tr><th>Total Sessions Scheduled</th><td id="totalSessionsScheduled"></td></tr>
         <tr><th>Total Sessions Attended</th><td id="totalSessionsAttended"></td></tr>
+        <tr><th>Attendance %</th><td id="attendancePercent"></td></tr>
         <tr><th>Attendance Badge</th><td id="attendanceBadge"></td></tr>
     </table>
 </div>
@@ -364,8 +343,8 @@
 <!-- PROGRESS SCORE -->
 <div class="section">
     <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/positive-dynamic.png">
-        Client Progress Score
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/speed.png">
+        Progress Score
     </div>
 
     <table>
@@ -385,29 +364,27 @@
         Trainer Signature
     </div>
 
-    <textarea id="trainerSignature" placeholder="Trainer signature..."></textarea>
+    <textarea id="trainerSignature" placeholder="Trainer signature or notes"></textarea>
 </div>
 
 <!-- PROGRESSION CHART -->
 <div class="section">
     <div class="section-title">
         <img src="https://img.icons8.com/ios-filled/50/1f4e79/line-chart.png">
-        Client Progression Chart
+        Progress Chart
     </div>
 
     <canvas id="progressChart" height="120"></canvas>
 </div>
 
-<!-- CHART.JS -->
+<!-- SCRIPT LOADERS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- PDF EXPORT LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-<!-- BEGIN FULL JAVASCRIPT ENGINE -->
+<!-- MAIN JAVASCRIPT WRAPPER -->
 <script>
-window.addEventListener("DOMContentLoaded", function () { 
-    /* ============================================================
+window.addEventListener("DOMContentLoaded", function () {
+/* ============================================================
    TRAINER & CLIENT MANAGEMENT
    ============================================================ */
 
@@ -596,7 +573,6 @@ function updateDashboard() {
    BODY METRICS & WORKOUT COMMITMENT
    ============================================================ */
 
-/* BMI + weight to lose */
 function updateBodyMetrics() {
     const h = parseFloat(document.getElementById("height").value);
     const cw = parseFloat(document.getElementById("currentWeight").value);
@@ -618,7 +594,6 @@ function updateBodyMetrics() {
     updateWeeksToGoal();
 }
 
-/* Weeks to goal + total sessions */
 function updateWeeksToGoal() {
     const cw = parseFloat(document.getElementById("currentWeight").value);
     const dw = parseFloat(document.getElementById("desiredWeight").value);
@@ -631,15 +606,13 @@ function updateWeeksToGoal() {
     }
 
     const weightToLose = cw - dw;
-    const assumedLossPerWeek = 1; // 1 lb/week
-    const weeks = weightToLose / assumedLossPerWeek;
+    const weeks = weightToLose / 1;
     const totalSessions = weeks * spw;
 
     document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
     document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
 }
 
-/* Training goal → workout plan */
 function updateWorkoutPlan() {
     const goal = document.getElementById("trainingGoal").value;
     const planDiv = document.getElementById("workoutPlan");
@@ -648,26 +621,26 @@ function updateWorkoutPlan() {
     if (goal === "fatloss") {
         text = `
             <strong>Fat Loss Plan:</strong><br>
-            • 3–4 days/week of full-body strength training<br>
-            • 20–30 minutes of moderate cardio after sessions<br>
-            • Focus on compound lifts and progressive overload<br>
-            • Maintain a small calorie deficit with high protein
+            • 3–4 days/week full-body strength<br>
+            • 20–30 min cardio<br>
+            • Compound lifts<br>
+            • High protein, slight deficit
         `;
     } else if (goal === "muscle") {
         text = `
             <strong>Muscle Gain Plan:</strong><br>
-            • 4–5 days/week of split strength training<br>
-            • 10–15 minutes light cardio for warm-up<br>
-            • Emphasis on heavy compound lifts and volume<br>
-            • Slight calorie surplus with high protein intake
+            • 4–5 days/week split training<br>
+            • Heavy compound lifts<br>
+            • High volume<br>
+            • Slight calorie surplus
         `;
     } else if (goal === "recomp") {
         text = `
             <strong>Recomposition Plan:</strong><br>
-            • 3–4 days/week of strength training<br>
-            • 2–3 days/week of moderate cardio<br>
-            • Alternate focus between intensity and volume<br>
-            • Maintain near-maintenance calories with high protein
+            • 3–4 days strength<br>
+            • 2–3 days cardio<br>
+            • Mix intensity & volume<br>
+            • Maintenance calories
         `;
     } else {
         text = "";
@@ -676,11 +649,8 @@ function updateWorkoutPlan() {
     planDiv.innerHTML = text;
 }
 
-/* Attach metric listeners */
 ["height","currentWeight","desiredWeight","sessionsPerWeek"].forEach(id => {
-    document.getElementById(id).addEventListener("input", () => {
-        updateBodyMetrics();
-    });
+    document.getElementById(id).addEventListener("input", updateBodyMetrics);
 });
 
 document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
@@ -719,13 +689,11 @@ function updateNutrition() {
 
     const tdee = bmr * activity;
 
-    const goal = document.getElementById("trainingGoal").value;
     let targetCalories = tdee;
-    if (goal === "fatloss") {
-        targetCalories = tdee - 300;
-    } else if (goal === "muscle") {
-        targetCalories = tdee + 200;
-    }
+    const goal = document.getElementById("trainingGoal").value;
+
+    if (goal === "fatloss") targetCalories -= 300;
+    if (goal === "muscle") targetCalories += 200;
 
     const protein = weightKg * 2.0;
     const fats = weightKg * 0.8;
@@ -743,20 +711,17 @@ function updateNutrition() {
 
     document.getElementById("nutritionPlan").innerHTML = `
         <strong>Nutrition Summary:</strong><br>
-        • Approx. ${Math.round(targetCalories)} kcal/day<br>
+        • ${Math.round(targetCalories)} kcal/day<br>
         • Protein: ${Math.round(protein)} g<br>
         • Carbs: ${Math.round(carbs)} g<br>
-        • Fats: ${Math.round(fats)} g<br>
-        • Emphasis on whole foods, lean protein, and fiber.
+        • Fats: ${Math.round(fats)} g
     `;
 }
 
-/* Attach nutrition listeners */
 ["sex","age","height","currentWeight","activityLevel","trainingGoal"].forEach(id => {
     document.getElementById(id).addEventListener("input", updateNutrition);
     document.getElementById(id).addEventListener("change", updateNutrition);
 });
-
 /* ============================================================
    WEEKLY EVALUATION ENGINE
    ============================================================ */
@@ -877,42 +842,8 @@ function generateMonthlyWeeks(count = 4) {
     if (!currentClient) return;
 
     if (!clients[currentClient].monthly) {
-        clients[currentClient].monthly = [];
-    }
-
-    const existing = clients[currentClient].monthly.length;
-    for (let i = existing; i < existing + count; i++) {
-        clients[currentClient].monthly.push({
-            label: `Week ${i + 1}`,
-            focus: "",
-            wins: "",
-            improvements: ""
-        });
-    }
-
-    const selector = document.getElementById("monthlySelector");
-    selector.innerHTML = "";
-    clients[currentClient].monthly.forEach((w, idx) => {
-        const opt = document.createElement("option");
-        opt.value = idx;
-        opt.textContent = w.label;
-        selector.appendChild(opt);
-    });
-
-    selector.value = clients[currentClient].monthly.length - 1;
-    renderMonthlyPanel();
-}
-
-document.getElementById("generateMonthlyBtn").addEventListener("click", () => {
-    generateMonthlyWeeks(4);
-});
-
-document.getElementById("addMonthlyWeekBtn").addEventListener("click", () => {
-    generateMonthlyWeeks(1);
-});
-
-document.getElementById("monthlySelector").addEventListener("change", renderMonthlyPanel);
-        /* ============================================================
+        clients[currentClient].monthly =
+            /* ============================================================
    ATTENDANCE SUMMARY ENGINE
    ============================================================ */
 
@@ -1041,7 +972,7 @@ document.getElementById("exportPDFBtn").addEventListener("click", () => {
 });
 
 /* ============================================================
-   FINALIZE
+   FINALIZE SYSTEM
    ============================================================ */
 
 updateDashboard();
@@ -1053,7 +984,3 @@ updateChart();
 </script>
 </body>
 </html>
-
-
-
-

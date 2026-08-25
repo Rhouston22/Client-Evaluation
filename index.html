@@ -3,9 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <title>Crunch Gym Fitness Evaluation System</title>
+
+<!-- CLEAN & PROFESSIONAL LIGHT THEME -->
 <style>
-    body { font-family: Arial, sans-serif; background:#f5f7fa; margin:20px; color:#333; }
-    h1 { color:#1f4e79; margin-top:10px; }
+    body {
+        font-family: Arial, sans-serif;
+        background:#f4f7fb;
+        margin:20px;
+        color:#333;
+    }
+
+    h1 {
+        color:#1f4e79;
+        margin-top:10px;
+        font-weight:700;
+        letter-spacing:0.5px;
+    }
+
+    /* SECTION ICONS */
+    .section-title {
+        font-size:1.25rem;
+        font-weight:600;
+        margin-bottom:12px;
+        border-bottom:2px solid #d9e2ef;
+        padding-bottom:6px;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        color:#1f4e79;
+    }
+    .section-title img {
+        width:22px;
+        height:22px;
+        opacity:0.9;
+    }
+
+    .section {
+        background:#ffffff;
+        padding:22px;
+        margin-bottom:22px;
+        border-radius:10px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    table {
+        width:100%;
+        border-collapse:collapse;
+        margin-top:10px;
+    }
+
+    th, td {
+        border:1px solid #e1e7f0;
+        padding:10px;
+        font-size:0.95rem;
+        vertical-align:top;
+    }
+
+    th {
+        background:#eef3fa;
+        font-weight:600;
+        color:#1f4e79;
+    }
+
+    input, select, textarea {
+        width:95%;
+        padding:7px;
+        border:1px solid #cdd6e4;
+        border-radius:6px;
+        box-sizing:border-box;
+        font-size:0.95rem;
+    }
+
+    textarea {
+        min-height:70px;
+    }
+
+    button {
+        padding:9px 14px;
+        margin-right:6px;
+        margin-top:5px;
+        background:#1f4e79;
+        color:#fff;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+        font-size:0.9rem;
+        font-weight:600;
+        letter-spacing:0.3px;
+    }
+
+    button:hover {
+        background:#163a5c;
+    }
+
+    .inline {
+        display:inline-block;
+        margin-right:20px;
+        vertical-align:top;
+    }
+
+    @media print {
+        button { display:none; }
+        body { background:#fff; }
+        .section { box-shadow:none; }
+        .logo-wrapper { display:none; }
+    }
+
+    /* LOGO */
     .logo-wrapper {
         text-align:center;
         margin-bottom:10px;
@@ -26,34 +130,9 @@
         color:#444;
         margin-top:4px;
     }
-    .section { background:#fff; padding:20px; margin-bottom:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
-    .section-title { font-size:1.2rem; font-weight:bold; margin-bottom:10px; border-bottom:1px solid #ddd; padding-bottom:5px; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; }
-    th, td { border:1px solid #ddd; padding:8px; font-size:0.95rem; vertical-align:top; }
-    th { background:#e8eef5; }
-    input, select, textarea { width:95%; padding:6px; box-sizing:border-box; }
-    textarea { min-height:60px; }
-    button {
-        padding:8px 12px;
-        margin-right:6px;
-        margin-top:5px;
-        background:#1f4e79;
-        color:#fff;
-        border:none;
-        border-radius:6px;
-        cursor:pointer;
-        font-size:0.9rem;
-    }
-    button:hover { background:#163a5c; }
-    .inline { display:inline-block; margin-right:10px; vertical-align:top; }
-    @media print {
-        button { display:none; }
-        body { background:#fff; }
-        .section { box-shadow:none; }
-        .logo-wrapper { display:none; }
-    }
 </style>
 </head>
+
 <body>
 
 <div class="logo-wrapper">
@@ -65,7 +144,10 @@
 
 <!-- TRAINER & CLIENT MANAGEMENT -->
 <div class="section">
-    <div class="section-title">Trainer & Client Management</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/conference-call.png">
+        Trainer & Client Management
+    </div>
 
     <div class="inline">
         <strong>Trainer:</strong><br>
@@ -93,7 +175,11 @@
 
 <!-- DASHBOARD -->
 <div class="section">
-    <div class="section-title">Trainer Dashboard (Snapshots)</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/combo-chart.png">
+        Trainer Dashboard (Snapshots)
+    </div>
+
     <table>
         <tr>
             <th>Trainer</th>
@@ -111,7 +197,11 @@
 
 <!-- CLIENT INFO -->
 <div class="section">
-    <div class="section-title">Client Information</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/user.png">
+        Client Information
+    </div>
+
     <table>
         <tr><th>Name</th><td><input id="name"></td></tr>
         <tr><th>Sex</th>
@@ -127,11 +217,14 @@
         <tr><th>Date</th><td><input id="date" type="date"></td></tr>
         <tr><th>Trainer</th><td><input id="trainerNameField" placeholder="Auto from trainer dropdown"></td></tr>
     </table>
-</div>
-
-<!-- BODY METRICS -->
+</div> 
+    <!-- BODY METRICS -->
 <div class="section">
-    <div class="section-title">Body Metrics</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/scale.png">
+        Body Metrics
+    </div>
+
     <table>
         <tr><th>Height (inches)</th><td><input id="height" type="number"></td></tr>
         <tr><th>Current Weight (lbs)</th><td><input id="currentWeight" type="number"></td></tr>
@@ -145,9 +238,14 @@
 
 <!-- WORKOUT COMMITMENT -->
 <div class="section">
-    <div class="section-title">Workout Commitment</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/dumbbell.png">
+        Workout Commitment
+    </div>
+
     <table>
-        <tr><th>Session Length</th>
+        <tr>
+            <th>Session Length</th>
             <td>
                 <select id="sessionLength">
                     <option value="">Select</option>
@@ -164,9 +262,14 @@
 
 <!-- TRAINING GOAL -->
 <div class="section">
-    <div class="section-title">Training Goal & Workout Plan</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/goal.png">
+        Training Goal & Workout Plan
+    </div>
+
     <table>
-        <tr><th>Training Goal</th>
+        <tr>
+            <th>Training Goal</th>
             <td>
                 <select id="trainingGoal">
                     <option value="">Select Goal</option>
@@ -177,14 +280,20 @@
             </td>
         </tr>
     </table>
-    <div id="workoutPlan" style="padding:10px; background:#eef3fa; border-radius:8px;"></div>
+
+    <div id="workoutPlan" style="padding:12px; background:#eef3fa; border-radius:8px;"></div>
 </div>
 
 <!-- NUTRITION -->
 <div class="section">
-    <div class="section-title">Nutrition Plan & Calorie Calculator</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/meal.png">
+        Nutrition Plan & Calorie Calculator
+    </div>
+
     <table>
-        <tr><th>Activity Level</th>
+        <tr>
+            <th>Activity Level</th>
             <td>
                 <select id="activityLevel">
                     <option value="">Select</option>
@@ -202,31 +311,48 @@
         <tr><th>Carbs (g)</th><td id="carbsGrams"></td></tr>
         <tr><th>Fats (g)</th><td id="fatsGrams"></td></tr>
     </table>
-    <div id="nutritionPlan" style="padding:10px; background:#eef3fa; border-radius:8px;"></div>
+
+    <div id="nutritionPlan" style="padding:12px; background:#eef3fa; border-radius:8px;"></div>
 </div>
 
 <!-- WEEKLY EVALUATION -->
 <div class="section">
-    <div class="section-title">Weekly Evaluation</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/calendar.png">
+        Weekly Evaluation
+    </div>
+
     <button id="generateWeeksBtn">Generate Weeks</button>
     <button id="addWeekBtn">Add More Weeks</button>
+
     <label><strong>Select Week:</strong></label>
     <select id="weeklySelector"></select>
+
     <div id="weeklyPanel" style="margin-top:15px;"></div>
 </div> 
     <!-- MONTHLY TRAINER NOTES -->
 <div class="section">
-    <div class="section-title">Monthly Trainer Notes</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/note.png">
+        Monthly Trainer Notes
+    </div>
+
     <button id="generateMonthlyBtn">Generate Monthly Weeks</button>
     <button id="addMonthlyWeekBtn">Add More Monthly Weeks</button>
+
     <label><strong>Select Week:</strong></label>
     <select id="monthlySelector"></select>
+
     <div id="monthlyPanel" style="margin-top:15px;"></div>
 </div>
 
 <!-- ATTENDANCE SUMMARY -->
 <div class="section">
-    <div class="section-title">Client Attendance Summary</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/attendance.png">
+        Client Attendance Summary
+    </div>
+
     <table>
         <tr><th>Average Attendance %</th><td id="attendancePercent"></td></tr>
         <tr><th>Total Sessions Scheduled</th><td id="totalSessionsScheduled"></td></tr>
@@ -237,450 +363,399 @@
 
 <!-- PROGRESS SCORE -->
 <div class="section">
-    <div class="section-title">Client Progress Score</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/positive-dynamic.png">
+        Client Progress Score
+    </div>
+
     <table>
         <tr><th>Adherence (0–10)</th><td><input id="adherence" type="number"></td></tr>
         <tr><th>Effort (0–10)</th><td><input id="effort" type="number"></td></tr>
         <tr><th>Progress Score</th><td id="progressScore"></td></tr>
         <tr><th>Progress Badge</th><td id="progressBadge"></td></tr>
     </table>
+
     <button id="updateProgressBtn">Update Progress Score</button>
 </div>
 
 <!-- TRAINER SIGNATURE -->
 <div class="section">
-    <div class="section-title">Trainer Signature</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/signature.png">
+        Trainer Signature
+    </div>
+
     <textarea id="trainerSignature" placeholder="Trainer signature..."></textarea>
 </div>
 
 <!-- PROGRESSION CHART -->
 <div class="section">
-    <div class="section-title">Client Progression Chart</div>
+    <div class="section-title">
+        <img src="https://img.icons8.com/ios-filled/50/1f4e79/line-chart.png">
+        Client Progression Chart
+    </div>
+
     <canvas id="progressChart" height="120"></canvas>
 </div>
 
 <!-- CHART.JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- PDF EXPORT LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+<!-- BEGIN FULL JAVASCRIPT ENGINE -->
 <script>
-window.addEventListener("DOMContentLoaded", function () {
-
-    let trainers = [];
-    let clientsByTrainer = {};
-    let weeklyEvalCount = 0;
-    let monthlyNotesCount = 0;
-    let weeklyData = {};
-    let monthlyData = {};
-    let monthlyHistory = [];
-    let progressChart = null;
-
-    function $(id) { return document.getElementById(id); }
-    function safeNumber(v) { const n = parseFloat(v); return isNaN(n) ? 0 : n; }
-
-    function storageKeyTrainerList() { return "crunch_trainers"; }
-    function storageKeyClients(t) { return "crunch_clients_" + t; }
-    function storageKeyClientData(t,c) { return "crunch_data_" + t + "_" + c; }
-    function storageKeyDashboard() { return "crunch_dashboard"; }
-
-    function loadTrainerList() {
-        const raw = localStorage.getItem(storageKeyTrainerList());
-        trainers = raw ? JSON.parse(raw) : [];
-        renderTrainerSelect();
-    }
-
-    function saveTrainerList() {
-        localStorage.setItem(storageKeyTrainerList(), JSON.stringify(trainers));
-    }
-
-    function renderTrainerSelect() {
-        const sel = $("trainerSelect");
-        sel.innerHTML = "";
-        trainers.forEach(t => {
-            const opt = document.createElement("option");
-            opt.value = t;
-            opt.textContent = t;
-            sel.appendChild(opt);
-        });
-        if (trainers.length > 0) {
-            sel.value = trainers[0];
-            onTrainerChange();
-        } else {
-            $("trainerNameField").value = "";
-            $("clientSelect").innerHTML = "";
-            clearAllFields();
-        }
-    }
-
-    function onTrainerChange() {
-        const trainer = $("trainerSelect").value;
-        $("trainerNameField").value = trainer || "";
-        if (trainer) loadClientList(trainer);
-        else {
-            $("clientSelect").innerHTML = "";
-            clearAllFields();
-        }
-    }
-
-    function loadClientList(trainer) {
-        const raw = localStorage.getItem(storageKeyClients(trainer));
-        clientsByTrainer[trainer] = raw ? JSON.parse(raw) : [];
-        renderClientSelect(trainer);
-    }
-
-    function saveClientList(trainer) {
-        localStorage.setItem(storageKeyClients(trainer), JSON.stringify(clientsByTrainer[trainer] || []));
-    }
-
-    function renderClientSelect(trainer) {
-        const sel = $("clientSelect");
-        sel.innerHTML = "";
-        const list = clientsByTrainer[trainer] || [];
-        list.forEach(c => {
-            const opt = document.createElement("option");
-            opt.value = c;
-            opt.textContent = c;
-            sel.appendChild(opt);
-        });
-        if (list.length > 0) {
-            sel.value = list[0];
-            loadClientData(trainer, list[0]);
-        } else {
-            clearAllFields();
-            $("name").value = "";
-        }
-    }
-
-    $("addTrainerBtn").addEventListener("click", function () {
-        const name = $("newTrainerName").value.trim();
-        if (!name) return;
-        if (!trainers.includes(name)) {
-            trainers.push(name);
-            saveTrainerList();
-            renderTrainerSelect();
-            $("newTrainerName").value = "";
-        }
-    });
-
-    $("removeTrainerBtn").addEventListener("click", function () {
-        const trainer = $("trainerSelect").value;
-        if (!trainer) return;
-        trainers = trainers.filter(t => t !== trainer);
-        saveTrainerList();
-        const list = clientsByTrainer[trainer] || [];
-        list.forEach(c => {
-            localStorage.removeItem(storageKeyClientData(trainer, c));
-        });
-        localStorage.removeItem(storageKeyClients(trainer));
-        delete clientsByTrainer[trainer];
-        renderTrainerSelect();
-    });
-
-    $("trainerSelect").addEventListener("change", onTrainerChange);
-
-    $("addClientBtn").addEventListener("click", function () {
-        const trainer = $("trainerSelect").value;
-        if (!trainer) { alert("Add/select a trainer first."); return; }
-        const name = $("newClientName").value.trim();
-        if (!name) return;
-        const list = clientsByTrainer[trainer] || [];
-        if (!list.includes(name)) {
-            list.push(name);
-            clientsByTrainer[trainer] = list;
-            saveClientList(trainer);
-            renderClientSelect(trainer);
-            $("newClientName").value = "";
-        }
-    });
-
-    $("deleteClientBtn").addEventListener("click", function () {
-        const trainer = $("trainerSelect").value;
-        const client = $("clientSelect").value;
-        if (!trainer || !client) return;
-        const list = clientsByTrainer[trainer] || [];
-        clientsByTrainer[trainer] = list.filter(c => c !== client);
-        saveClientList(trainer);
-        localStorage.removeItem(storageKeyClientData(trainer, client));
-        renderClientSelect(trainer);
-    });
-
-    $("clientSelect").addEventListener("change", function () {
-        const trainer = $("trainerSelect").value;
-        const client = $("clientSelect").value;
-        if (!trainer || !client) return;
-        loadClientData(trainer, client);
-    });
-
-    $("saveClientDataBtn").addEventListener("click", function () {
-        const trainer = $("trainerSelect").value;
-        const client = $("clientSelect").value;
-        if (!trainer || !client) { alert("Select trainer and client first."); return; }
-        const data = collectClientData();
-        localStorage.setItem(storageKeyClientData(trainer, client), JSON.stringify(data));
-        alert("Client data saved.");
-    });
-
-    $("loadClientDataBtn").addEventListener("click", function () {
-        const trainer = $("trainerSelect").value;
-        const client = $("clientSelect").value;
-        if (!trainer || !client) { alert("Select trainer and client first."); return; }
-        loadClientData(trainer, client);
-    });
-
-    function collectClientData() {
-        const data = {
-            inputs: {},
-            selects: {},
-            textareas: {},
-            weeklyEvalCount,
-            monthlyNotesCount,
-            weeklyData,
-            monthlyData,
-            monthlyHistory,
-            trainerSignature: $("trainerSignature").value
-        };
-        document.querySelectorAll("input[id]").forEach(i => data.inputs[i.id] = i.value);
-        document.querySelectorAll("select[id]").forEach(s => data.selects[s.id] = s.value);
-        document.querySelectorAll("textarea[id]").forEach(t => data.textareas[t.id] = t.value);
-        return data;
-    }
-
-    function loadClientData(trainer, client) {
-        const raw = localStorage.getItem(storageKeyClientData(trainer, client));
-        clearAllFields();
-        $("trainerNameField").value = trainer;
-        $("name").value = client;
-        if (!raw) { calculateCore(); return; }
-
-        const data = JSON.parse(raw);
-        Object.keys(data.inputs || {}).forEach(id => { if ($(id)) $(id).value = data.inputs[id]; });
-        Object.keys(data.selects || {}).forEach(id => { if ($(id)) $(id).value = data.selects[id]; });
-        Object.keys(data.textareas || {}).forEach(id => { if ($(id)) $(id).value = data.textareas[id]; });
-
-        weeklyEvalCount = data.weeklyEvalCount || 0;
-        monthlyNotesCount = data.monthlyNotesCount || 0;
-        weeklyData = data.weeklyData || {};
-        monthlyData = data.monthlyData || {};
-        monthlyHistory = data.monthlyHistory || [];
-        $("trainerSignature").value = data.trainerSignature || "";
-
-        rebuildWeekSelectors();
-        updateDashboard();
-        calculateCore();
-        updateProgressScore();
-        updateAttendanceSummary();
-        updateChart();
-    }
-
-    function clearAllFields() {
-        document.querySelectorAll("input").forEach(i => i.value = "");
-        document.querySelectorAll("select").forEach(s => s.value = "");
-        document.querySelectorAll("textarea").forEach(t => t.value = "");
-        document.querySelectorAll("td[id]").forEach(td => td.innerText = "");
-        weeklyEvalCount = 0;
-        monthlyNotesCount = 0;
-        weeklyData = {};
-        monthlyData = {};
-        $("weeklySelector").innerHTML = "";
-        $("weeklyPanel").innerHTML = "";
-        $("monthlySelector").innerHTML = "";
-        $("monthlyPanel").innerHTML = "";
-        if (progressChart) { progressChart.destroy(); progressChart = null; }
-    }
-
-    function rebuildWeekSelectors() {
-        const wSel = $("weeklySelector");
-        wSel.innerHTML = "";
-        for (let i = 1; i <= weeklyEvalCount; i++) {
-            const opt = document.createElement("option");
-            opt.value = i;
-            opt.textContent = "Week " + i;
-            wSel.appendChild(opt);
-        }
-        if (weeklyEvalCount > 0) {
-            wSel.value = weeklyEvalCount;
-            renderWeeklyPanel();
-        }
-
-        const mSel = $("monthlySelector");
-        mSel.innerHTML = "";
-        for (let i = 1; i <= monthlyNotesCount; i++) {
-            const opt = document.createElement("option");
-            opt.value = i;
-            opt.textContent = "Week " + i;
-            mSel.appendChild(opt);
-        }
-        if (monthlyNotesCount > 0) {
-            mSel.value = monthlyNotesCount;
-            renderMonthlyPanel();
-        }
-    }
-
-    function calculateCore() {
-        const height = safeNumber($("height").value);
-        const currentWeight = safeNumber($("currentWeight").value);
-        const desiredWeight = safeNumber($("desiredWeight").value);
-        const sessionsPerWeek = safeNumber($("sessionsPerWeek").value);
-        const sessionLength = $("sessionLength").value;
-
-        if (height && currentWeight) {
-            const bmi = (currentWeight / (height * height)) * 703;
-            $("bmi").innerText = bmi.toFixed(1);
-        } else $("bmi").innerText = "";
-
-        let weightToLose = currentWeight && desiredWeight ? currentWeight - desiredWeight : 0;
-        $("weightToLose").innerText = weightToLose ? weightToLose.toFixed(1) + " lbs" : "";
-
-        let weeklyRate = sessionLength === "30" ? 0.75 : sessionLength === "60" ? 1.25 : 1;
-
-        if (weightToLose > 0 && weeklyRate > 0 && sessionsPerWeek) {
-            const weeksToGoal = weightToLose / weeklyRate;
-            const totalSessions = weeksToGoal * sessionsPerWeek;
-            $("weeksToGoal").innerText = weeksToGoal.toFixed(1);
-            $("totalSessions").innerText = totalSessions.toFixed(0);
-        } else {
-            $("weeksToGoal").innerText = "";
-            $("totalSessions").innerText = "";
-        }
-
-        calculateNutrition();
-        updateChart();
-    }
-
-    $("trainingGoal").addEventListener("change", function () {
-        generateWorkoutPlan();
-        calculateNutrition();
-    });
-
-    function generateWorkoutPlan() {
-        const goal = $("trainingGoal").value;
-        const planBox = $("workoutPlan");
-
-        if (goal === "fatloss") {
-            planBox.innerHTML = `
-                <strong>Fat Loss Plan</strong><br>
-                - Strength: 2 days/week<br>
-                - Cardio: 3 days/week<br>
-                - HIIT: 1 day/week<br>
-                - Steps: 7,000–10,000/day
-            `;
-        } else if (goal === "muscle") {
-            planBox.innerHTML = `
-                <strong>Muscle Gain Plan</strong><br>
-                - Strength: 3–4 days/week<br>
-                - Light cardio: 1–2 days/week<br>
-                - Focus on hypertrophy
-            `;
-        } else if (goal === "recomp") {
-            planBox.innerHTML = `
-                <strong>Recomposition Plan</strong><br>
-                - Strength: 3 days/week<br>
-                - Cardio: 2 days/week<br>
-                - HIIT: 1 day/week
-            `;
-        } else planBox.innerHTML = "";
-    }
-
-    ["sex","age","height","currentWeight"].forEach(id => {
-        $(id).addEventListener("input", calculateNutrition);
-    });
-    $("activityLevel").addEventListener("change", calculateNutrition);
-
-    function calculateNutrition() {
-        const sex = $("sex").value;
-        const age = safeNumber($("age").value);
-        const heightIn = safeNumber($("height").value);
-        const weightLb = safeNumber($("currentWeight").value);
-        const activity = safeNumber($("activityLevel").value);
-        const goal = $("trainingGoal").value;
-
-        if (!sex || !age || !heightIn || !weightLb || !activity) {
-            $("bmr").innerText = "";
-            $("tdee").innerText = "";
-            $("targetCalories").innerText = "";
-            $("proteinGrams").innerText = "";
-            $("carbsGrams").innerText = "";
-            $("fatsGrams").innerText = "";
-            $("nutritionPlan").innerHTML = "";
-            return;
-        }
-
-        const heightCm = heightIn * 2.54;
-        const weightKg = weightLb * 0.453592;
-
-        let bmr = sex === "male"
-            ? 10 * weightKg + 6.25 * heightCm - 5 * age + 5
-            : 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
-
-        const tdee = bmr * activity;
-        let target = tdee;
-
-        if (goal === "fatloss") target = tdee - 400;
-        else if (goal === "muscle") target = tdee + 200;
-        else if (goal === "recomp") target = tdee - 150;
-
-        $("bmr").innerText = Math.round(bmr);
-        $("tdee").innerText = Math.round(tdee);
-        $("targetCalories").innerText = Math.round(target);
-
-        let proteinRatio = goal === "muscle" ? 1.1 : 1.0;
-        let carbRatio = goal === "fatloss" ? 0.35 : goal === "muscle" ? 0.45 : 0.4;
-        let fatRatio = 0.25;
-
-        const proteinGrams = Math.round(weightLb * proteinRatio);
-        const proteinCals = proteinGrams * 4;
-        const remainingCals = target - proteinCals;
-        const carbsCals = remainingCals * carbRatio;
-        const fatsCals = remainingCals * fatRatio;
-
-        $("proteinGrams").innerText = proteinGrams;
-        $("carbsGrams").innerText = Math.round(carbsCals / 4);
-        $("fatsGrams").innerText = Math.round(fatsCals / 9);
-
-        const nutritionBox = $("nutritionPlan");
-        if (goal === "fatloss") {
-            nutritionBox.innerHTML = `
-                <strong>Fat Loss Nutrition:</strong><br>
-                - Moderate deficit<br>
-                - High protein<br>
-                - Controlled carbs<br>
-                - Healthy fats
-            `;
-        } else if (goal === "muscle") {
-            nutritionBox.innerHTML = `
-                <strong>Muscle Gain Nutrition:</strong><br>
-                - Slight surplus<br>
-                - High protein<br>
-                - Higher carbs around workouts
-            `;
-        } else if (goal === "recomp") {
-            nutritionBox.innerHTML = `
-                <strong>Recomposition Nutrition:</strong><br>
-                - Small deficit or maintenance<br>
-                - High protein<br>
-                - Balanced carbs/fats
-            `;
-        } else nutritionBox.innerHTML = "";
-    }
-
-    $("generateWeeksBtn").addEventListener("click", generateWeeklyEvaluation);
-    $("addWeekBtn").addEventListener("click", addWeeklyEvalWeek);
-    $("weeklySelector").addEventListener("change", renderWeeklyPanel);
-
-    function generateWeeklyEvaluation() {
-        const weeksToGoalText = $("weeksToGoal").innerText;
-        const sessionsPerWeek = safeNumber($("sessionsPerWeek").value);
-        if (!weeksToGoalText || !sessionsPerWeek) {
-            alert("Enter height, weights, session length and sessions per week first.");
-            return;
-        }
-
-        const weeksNeeded = Math.ceil(parseFloat
-                                      <script>
 window.addEventListener("DOMContentLoaded", function () { 
-    </script>
-</body>
-</html>
+    /* ============================================================
+   TRAINER & CLIENT MANAGEMENT
+   ============================================================ */
+
+let trainers = [];
+let clients = {};
+let currentClient = null;
+
+/* Populate trainer dropdown */
+function refreshTrainerList() {
+    const sel = document.getElementById("trainerSelect");
+    sel.innerHTML = "";
+    trainers.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        sel.appendChild(opt);
+    });
+}
+
+/* Populate client dropdown */
+function refreshClientList() {
+    const sel = document.getElementById("clientSelect");
+    sel.innerHTML = "";
+    Object.keys(clients).forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
+    });
+}
+
+/* Add trainer */
+document.getElementById("addTrainerBtn").addEventListener("click", () => {
+    const name = document.getElementById("newTrainerName").value.trim();
+    if (!name) return;
+    trainers.push(name);
+    refreshTrainerList();
+});
+
+/* Remove trainer */
+document.getElementById("removeTrainerBtn").addEventListener("click", () => {
+    const sel = document.getElementById("trainerSelect").value;
+    trainers = trainers.filter(t => t !== sel);
+    refreshTrainerList();
+});
+
+/* Add client */
+document.getElementById("addClientBtn").addEventListener("click", () => {
+    const name = document.getElementById("newClientName").value.trim();
+    if (!name) return;
+
+    clients[name] = {
+        info: {},
+        weekly: [],
+        monthly: [],
+        attendance: {},
+        progress: {},
+        snapshots: []
+    };
+
+    refreshClientList();
+});
+
+/* Delete client */
+document.getElementById("deleteClientBtn").addEventListener("click", () => {
+    const sel = document.getElementById("clientSelect").value;
+    delete clients[sel];
+    refreshClientList();
+});
+
+/* Load selected client */
+document.getElementById("clientSelect").addEventListener("change", () => {
+    currentClient = document.getElementById("clientSelect").value;
+    loadClientIntoForm();
+});
+
+/* Load client data into form */
+function loadClientIntoForm() {
+    if (!currentClient) return;
+
+    const data = clients[currentClient].info || {};
+
+    document.getElementById("name").value = currentClient;
+    document.getElementById("sex").value = data.sex || "";
+    document.getElementById("age").value = data.age || "";
+    document.getElementById("date").value = data.date || "";
+    document.getElementById("trainerNameField").value = data.trainer || "";
+
+    document.getElementById("height").value = data.height || "";
+    document.getElementById("currentWeight").value = data.currentWeight || "";
+    document.getElementById("desiredWeight").value = data.desiredWeight || "";
+    document.getElementById("bodyFat").value = data.bodyFat || "";
+    document.getElementById("musclePercent").value = data.musclePercent || "";
+
+    document.getElementById("sessionLength").value = data.sessionLength || "";
+    document.getElementById("sessionsPerWeek").value = data.sessionsPerWeek || "";
+    document.getElementById("trainingGoal").value = data.trainingGoal || "";
+    document.getElementById("activityLevel").value = data.activityLevel || "";
+
+    document.getElementById("trainerSignature").value = data.signature || "";
+}
+
+/* Save client data */
+document.getElementById("saveClientDataBtn").addEventListener("click", () => {
+    if (!currentClient) return;
+
+    clients[currentClient].info = {
+        sex: document.getElementById("sex").value,
+        age: document.getElementById("age").value,
+        date: document.getElementById("date").value,
+        trainer: document.getElementById("trainerNameField").value,
+        height: document.getElementById("height").value,
+        currentWeight: document.getElementById("currentWeight").value,
+        desiredWeight: document.getElementById("desiredWeight").value,
+        bodyFat: document.getElementById("bodyFat").value,
+        musclePercent: document.getElementById("musclePercent").value,
+        sessionLength: document.getElementById("sessionLength").value,
+        sessionsPerWeek: document.getElementById("sessionsPerWeek").value,
+        trainingGoal: document.getElementById("trainingGoal").value,
+        activityLevel: document.getElementById("activityLevel").value,
+        signature: document.getElementById("trainerSignature").value
+    };
+
+    localStorage.setItem("crunchClients", JSON.stringify(clients));
+});
+
+/* Load all clients from storage */
+document.getElementById("loadClientDataBtn").addEventListener("click", () => {
+    const stored = localStorage.getItem("crunchClients");
+    if (stored) {
+        clients = JSON.parse(stored);
+        refreshClientList();
+    }
+});
+
+/* ============================================================
+   DASHBOARD SNAPSHOT SYSTEM
+   ============================================================ */
+
+document.getElementById("monthlyUpdateBtn").addEventListener("click", () => {
+    if (!currentClient) return;
+
+    const info = clients[currentClient].info;
+    if (!info) return;
+
+    const snapshot = {
+        trainer: info.trainer || "",
+        client: currentClient,
+        date: info.date || "",
+        weight: info.currentWeight || "",
+        bodyFat: info.bodyFat || "",
+        bmi: document.getElementById("bmi").textContent,
+        goal: info.trainingGoal || "",
+        progressScore: document.getElementById("progressScore").textContent
+    };
+
+    clients[currentClient].snapshots.push(snapshot);
+    updateDashboard();
+});
+
+/* Update dashboard table */
+function updateDashboard() {
+    const body = document.getElementById("dashboardBody");
+    body.innerHTML = "";
+
+    Object.keys(clients).forEach(client => {
+        clients[client].snapshots.forEach(s => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${s.trainer}</td>
+                <td>${s.client}</td>
+                <td>${s.date}</td>
+                <td>${s.weight}</td>
+                <td>${s.bodyFat}</td>
+                <td>${s.bmi}</td>
+                <td>${s.goal}</td>
+                <td>${s.progressScore}</td>
+            `;
+
+            body.appendChild(row);
+        });
+    });
+}
+/* ============================================================
+   BODY METRICS & WORKOUT COMMITMENT
+   ============================================================ */
+
+/* BMI + weight to lose */
+function updateBodyMetrics() {
+    const h = parseFloat(document.getElementById("height").value);
+    const cw = parseFloat(document.getElementById("currentWeight").value);
+    const dw = parseFloat(document.getElementById("desiredWeight").value);
+
+    if (h && cw) {
+        const bmi = (cw / (h * h)) * 703;
+        document.getElementById("bmi").textContent = bmi.toFixed(1);
+    } else {
+        document.getElementById("bmi").textContent = "";
+    }
+
+    if (cw && dw && cw > dw) {
+        document.getElementById("weightToLose").textContent = (cw - dw).toFixed(1) + " lbs";
+    } else {
+        document.getElementById("weightToLose").textContent = "";
+    }
+
+    updateWeeksToGoal();
+}
+
+/* Weeks to goal + total sessions */
+function updateWeeksToGoal() {
+    const cw = parseFloat(document.getElementById("currentWeight").value);
+    const dw = parseFloat(document.getElementById("desiredWeight").value);
+    const spw = parseFloat(document.getElementById("sessionsPerWeek").value);
+
+    if (!cw || !dw || !spw || cw <= dw) {
+        document.getElementById("weeksToGoal").textContent = "";
+        document.getElementById("totalSessions").textContent = "";
+        return;
+    }
+
+    const weightToLose = cw - dw;
+    const assumedLossPerWeek = 1; // 1 lb/week
+    const weeks = weightToLose / assumedLossPerWeek;
+    const totalSessions = weeks * spw;
+
+    document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
+    document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
+}
+
+/* Training goal → workout plan */
+function updateWorkoutPlan() {
+    const goal = document.getElementById("trainingGoal").value;
+    const planDiv = document.getElementById("workoutPlan");
+
+    let text = "";
+    if (goal === "fatloss") {
+        text = `
+            <strong>Fat Loss Plan:</strong><br>
+            • 3–4 days/week of full-body strength training<br>
+            • 20–30 minutes of moderate cardio after sessions<br>
+            • Focus on compound lifts and progressive overload<br>
+            • Maintain a small calorie deficit with high protein
+        `;
+    } else if (goal === "muscle") {
+        text = `
+            <strong>Muscle Gain Plan:</strong><br>
+            • 4–5 days/week of split strength training<br>
+            • 10–15 minutes light cardio for warm-up<br>
+            • Emphasis on heavy compound lifts and volume<br>
+            • Slight calorie surplus with high protein intake
+        `;
+    } else if (goal === "recomp") {
+        text = `
+            <strong>Recomposition Plan:</strong><br>
+            • 3–4 days/week of strength training<br>
+            • 2–3 days/week of moderate cardio<br>
+            • Alternate focus between intensity and volume<br>
+            • Maintain near-maintenance calories with high protein
+        `;
+    } else {
+        text = "";
+    }
+
+    planDiv.innerHTML = text;
+}
+
+/* Attach metric listeners */
+["height","currentWeight","desiredWeight","sessionsPerWeek"].forEach(id => {
+    document.getElementById(id).addEventListener("input", () => {
+        updateBodyMetrics();
+    });
+});
+
+document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
+
+/* ============================================================
+   NUTRITION CALCULATOR
+   ============================================================ */
+
+function updateNutrition() {
+    const sex = document.getElementById("sex").value;
+    const age = parseFloat(document.getElementById("age").value);
+    const h = parseFloat(document.getElementById("height").value);
+    const cw = parseFloat(document.getElementById("currentWeight").value);
+    const activity = parseFloat(document.getElementById("activityLevel").value);
+
+    if (!sex || !age || !h || !cw || !activity) {
+        document.getElementById("bmr").textContent = "";
+        document.getElementById("tdee").textContent = "";
+        document.getElementById("targetCalories").textContent = "";
+        document.getElementById("proteinGrams").textContent = "";
+        document.getElementById("carbsGrams").textContent = "";
+        document.getElementById("fatsGrams").textContent = "";
+        document.getElementById("nutritionPlan").innerHTML = "";
+        return;
+    }
+
+    const heightCm = h * 2.54;
+    const weightKg = cw / 2.205;
+
+    let bmr;
+    if (sex === "female") {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+    } else {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+    }
+
+    const tdee = bmr * activity;
+
+    const goal = document.getElementById("trainingGoal").value;
+    let targetCalories = tdee;
+    if (goal === "fatloss") {
+        targetCalories = tdee - 300;
+    } else if (goal === "muscle") {
+        targetCalories = tdee + 200;
+    }
+
+    const protein = weightKg * 2.0;
+    const fats = weightKg * 0.8;
+    const proteinCalories = protein * 4;
+    const fatsCalories = fats * 9;
+    const carbsCalories = targetCalories - proteinCalories - fatsCalories;
+    const carbs = carbsCalories / 4;
+
+    document.getElementById("bmr").textContent = Math.round(bmr) + " kcal";
+    document.getElementById("tdee").textContent = Math.round(tdee) + " kcal";
+    document.getElementById("targetCalories").textContent = Math.round(targetCalories) + " kcal";
+    document.getElementById("proteinGrams").textContent = Math.round(protein) + " g";
+    document.getElementById("carbsGrams").textContent = Math.round(carbs) + " g";
+    document.getElementById("fatsGrams").textContent = Math.round(fats) + " g";
+
+    document.getElementById("nutritionPlan").innerHTML = `
+        <strong>Nutrition Summary:</strong><br>
+        • Approx. ${Math.round(targetCalories)} kcal/day<br>
+        • Protein: ${Math.round(protein)} g<br>
+        • Carbs: ${Math.round(carbs)} g<br>
+        • Fats: ${Math.round(fats)} g<br>
+        • Emphasis on whole foods, lean protein, and fiber.
+    `;
+}
+
+/* Attach nutrition listeners */
+["sex","age","height","currentWeight","activityLevel","trainingGoal"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateNutrition);
+    document.getElementById(id).addEventListener("change", updateNutrition);
+});
+
 
 

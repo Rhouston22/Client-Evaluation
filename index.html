@@ -428,8 +428,11 @@ document.getElementById("addTrainerBtn").addEventListener("click", () => {
     }
 
     document.getElementById("newTrainerName").value = "";
-    refreshTrainerList();
+       // Reset everything
+    currentClient = null;
+    clearClientForm();
     refreshClientList();
+});
 });
 
 document.getElementById("removeTrainerBtn").addEventListener("click", () => {
@@ -500,6 +503,10 @@ document.getElementById("addClientBtn").addEventListener("click", () => {
 
     document.getElementById("newClientName").value = "";
     refreshClientList();
+    // Reset everything
+    currentClient = name;
+    clearClientForm();
+    refreshClientList();
 });
 
 document.getElementById("deleteClientBtn").addEventListener("click", () => {
@@ -508,6 +515,8 @@ document.getElementById("deleteClientBtn").addEventListener("click", () => {
     delete clients[currentClient];
     localStorage.setItem("crunchClients", JSON.stringify(clients));
 
+urrentClient = null;
+    clearClientForm();
     refreshClientList();
 });
 

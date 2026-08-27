@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Trainer Evaluation System</title>
+<title>Crunch Trainer Evaluation System</title>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,196 +11,313 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { margin-top: 30px; }
-    .inline { display: inline-block; vertical-align: top; margin-right: 20px; }
-    label { display: block; margin-top: 5px; }
-    input, select, textarea { width: 220px; margin-bottom: 5px; }
-    textarea { width: 300px; height: 80px; }
-    table { border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 5px 8px; }
-    .badge { font-weight: bold; }
-    #progressChart { max-width: 600px; }
-    button { margin-top: 5px; }
+    :root {
+        --crunch-orange: #f15a29;
+        --crunch-dark: #222;
+        --crunch-light: #fafafa;
+        --card-border: #ddd;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: var(--crunch-light);
+        color: var(--crunch-dark);
+    }
+
+    header {
+        background: var(--crunch-orange);
+        padding: 20px;
+        color: white;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    h2 {
+        margin-top: 30px;
+        color: var(--crunch-orange);
+        border-left: 6px solid var(--crunch-orange);
+        padding-left: 10px;
+        font-size: 22px;
+    }
+
+    .section {
+        background: white;
+        border: 2px solid var(--crunch-orange);
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input, select, textarea {
+        width: 250px;
+        padding: 8px;
+        margin-top: 3px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    textarea {
+        width: 350px;
+        height: 80px;
+    }
+
+    button {
+        background: var(--crunch-orange);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #d94f22;
+    }
+
+    .inline {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 40px;
+    }
+
+    table {
+        border-collapse: collapse;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
+
+    .badge {
+        font-weight: bold;
+        color: var(--crunch-orange);
+    }
+
+    #progressChart {
+        max-width: 600px;
+        margin-top: 20px;
+    }
 </style>
 </head>
 
 <body>
 
-<h1>Client Evaluation System</h1>
+<header>Crunch Fitness — Client Evaluation System</header>
 
-<!-- TRAINER & CLIENT -->
-<div class="inline">
+<!-- TRAINER & CLIENT SECTION -->
+<div class="section">
     <h2>Trainer & Client</h2>
 
-    <label>Trainer:</label>
-    <select id="trainerSelect"></select>
-    <input id="newTrainerName" placeholder="Add trainer name">
-    <button id="addTrainerBtn">Add Trainer</button>
-    <button id="removeTrainerBtn">Remove Trainer</button>
+    <div class="inline">
+        <label>Trainer:</label>
+        <select id="trainerSelect"></select>
+        <input id="newTrainerName" placeholder="Add trainer name">
+        <button id="addTrainerBtn">Add Trainer</button>
+        <button id="removeTrainerBtn">Remove Trainer</button>
+    </div>
 
-    <label>Client:</label>
-    <select id="clientSelect"></select>
-    <input id="newClientName" placeholder="Add client name">
-    <button id="addClientBtn">Add Client</button>
-    <button id="deleteClientBtn">Delete Client</button>
-    <button id="duplicateClientBtn">Duplicate Client</button>
+    <div class="inline">
+        <label>Client:</label>
+        <select id="clientSelect"></select>
+        <input id="newClientName" placeholder="Add client name">
+        <button id="addClientBtn">Add Client</button>
+        <button id="deleteClientBtn">Delete Client</button>
+        <button id="duplicateClientBtn">Duplicate Client</button>
+    </div>
 </div>
 
 <!-- CLIENT INFO -->
-<div class="inline">
-    <h2>Client Info</h2>
+<div class="section">
+    <h2>Client Information</h2>
 
-    <label>Name</label>
-    <input id="name">
+    <div class="inline">
+        <label>Name</label>
+        <input id="name">
 
-    <label>Sex</label>
-    <select id="sex">
-        <option value="">Select</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-    </select>
+        <label>Sex</label>
+        <select id="sex">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
 
-    <label>Age</label>
-    <input id="age" type="number">
+        <label>Age</label>
+        <input id="age" type="number">
 
-    <label>Date</label>
-    <input id="date" type="date">
+        <label>Date</label>
+        <input id="date" type="date">
 
-    <label>Trainer (auto)</label>
-    <input id="trainerNameField" readonly>
+        <label>Trainer (auto)</label>
+        <input id="trainerNameField" readonly>
+    </div>
 </div>
 
-<h2>Body Metrics</h2>
+<!-- BODY METRICS -->
+<div class="section">
+    <h2>Body Metrics</h2>
 
-<div class="inline">
-    <label>Height (inches)</label>
-    <input id="height" type="number">
+    <div class="inline">
+        <label>Height (inches)</label>
+        <input id="height" type="number">
 
-    <label>Current Weight (lbs)</label>
-    <input id="currentWeight" type="number">
+        <label>Current Weight (lbs)</label>
+        <input id="currentWeight" type="number">
 
-    <label>Desired Weight (lbs)</label>
-    <input id="desiredWeight" type="number">
+        <label>Desired Weight (lbs)</label>
+        <input id="desiredWeight" type="number">
 
-    <label>Body Fat %</label>
-    <input id="bodyFat" type="number">
+        <label>Body Fat %</label>
+        <input id="bodyFat" type="number">
 
-    <label>Muscle %</label>
-    <input id="musclePercent" type="number">
+        <label>Muscle %</label>
+        <input id="musclePercent" type="number">
+    </div>
+
+    <div class="inline">
+        <label>Session Length</label>
+        <select id="sessionLength">
+            <option value="30">30 minutes</option>
+            <option value="60">60 minutes</option>
+        </select>
+
+        <label>Sessions per Week</label>
+        <input id="sessionsPerWeek" type="number">
+
+        <label>Training Goal</label>
+        <select id="trainingGoal">
+            <option value="">Select</option>
+            <option value="fatloss">Fat Loss</option>
+            <option value="muscle">Gain Muscle</option>
+            <option value="recomp">Body Recomposition</option>
+        </select>
+
+        <label>Activity Level</label>
+        <select id="activityLevel">
+            <option value="">Select</option>
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="intense">Intense</option>
+            <option value="extreme">Extreme</option>
+        </select>
+    </div>
+
+    <h3>Results</h3>
+    <p><strong>BMI:</strong> <span id="bmi"></span></p>
+    <p><strong>Weight to Lose:</strong> <span id="weightToLose"></span></p>
+    <p><strong>Weeks to Goal:</strong> <span id="weeksToGoal"></span></p>
+    <p><strong>Total Sessions Needed:</strong> <span id="totalSessions"></span></p>
+
+    <h3>Workout Plan</h3>
+    <div id="workoutPlan"></div>
 </div>
 
-<div class="inline">
-    <label>Session Length</label>
-    <select id="sessionLength">
-        <option value="30">30 minutes</option>
-        <option value="60">60 minutes</option>
-    </select>
+<!-- NUTRITION -->
+<div class="section">
+    <h2>Nutrition Calculator</h2>
 
-    <label>Sessions per Week</label>
-    <input id="sessionsPerWeek" type="number">
+    <div class="inline">
+        <p><strong>BMR:</strong> <span id="bmrOutput"></span></p>
+        <p><strong>TDEE:</strong> <span id="tdeeOutput"></span></p>
+        <p><strong>Target Calories:</strong> <span id="calorieTargetOutput"></span></p>
+    </div>
 
-    <label>Training Goal</label>
-    <select id="trainingGoal">
-        <option value="">Select</option>
-        <option value="fatloss">Fat Loss</option>
-        <option value="muscle">Gain Muscle</option>
-        <option value="recomp">Body Recomposition</option>
-    </select>
+    <div class="inline">
+        <p><strong>Protein:</strong> <span id="proteinTarget"></span></p>
+        <p><strong>Fats:</strong> <span id="fatTarget"></span></p>
+        <p><strong>Carbs:</strong> <span id="carbTarget"></span></p>
+    </div>
 
-    <label>Activity Level</label>
-    <select id="activityLevel">
-        <option value="">Select</option>
-        <option value="sedentary">Sedentary</option>
-        <option value="light">Light</option>
-        <option value="moderate">Moderate</option>
-        <option value="intense">Intense</option>
-        <option value="extreme">Extreme</option>
-    </select>
+    <div>
+        <p><strong>Nutrition Plan:</strong></p>
+        <div id="nutritionPlan"></div>
+    </div>
 </div>
 
-<h3>Body Metrics Results</h3>
-<p><strong>BMI:</strong> <span id="bmi"></span></p>
-<p><strong>Weight to Lose:</strong> <span id="weightToLose"></span></p>
-<p><strong>Weeks to Goal:</strong> <span id="weeksToGoal"></span></p>
-<p><strong>Total Sessions Needed:</strong> <span id="totalSessions"></span></p>
+<!-- WEEKLY EVALUATION -->
+<div class="section">
+    <h2>Weekly Evaluation</h2>
 
-<h3>Workout Plan</h3>
-<div id="workoutPlan"></div>
+    <button id="generateWeeksBtn">Generate 4 Weeks</button>
+    <button id="addWeekBtn">Add Week</button>
 
-<h2>Nutrition Calculator</h2>
+    <label>Week:</label>
+    <select id="weeklySelector"></select>
 
-<div class="inline">
-    <p><strong>BMR:</strong> <span id="bmrOutput"></span></p>
-    <p><strong>TDEE:</strong> <span id="tdeeOutput"></span></p>
-    <p><strong>Target Calories:</strong> <span id="calorieTargetOutput"></span></p>
+    <div id="weeklyPanel"></div>
 </div>
 
-<div class="inline">
-    <p><strong>Protein:</strong> <span id="proteinTarget"></span></p>
-    <p><strong>Fats:</strong> <span id="fatTarget"></span></p>
-    <p><strong>Carbs:</strong> <span id="carbTarget"></span></p>
+<!-- ATTENDANCE -->
+<div class="section">
+    <h2>Attendance Summary</h2>
+
+    <p><strong>Total Sessions Scheduled:</strong> <span id="totalSessionsScheduled"></span></p>
+    <p><strong>Total Sessions Attended:</strong> <span id="totalSessionsAttended"></span></p>
+    <p><strong>Attendance %:</strong> <span id="attendancePercent"></span></p>
+    <p><strong>Attendance Badge:</strong> <span id="attendanceBadge" class="badge"></span></p>
 </div>
 
-<div>
-    <p><strong>Nutrition Plan:</strong></p>
-    <div id="nutritionPlan"></div>
+<!-- PROGRESS -->
+<div class="section">
+    <h2>Progress</h2>
+
+    <div class="inline">
+        <label>Adherence (0–10)</label>
+        <input id="adherence" type="number" min="0" max="10">
+
+        <label>Effort (0–10)</label>
+        <input id="effort" type="number" min="0" max="10">
+
+        <button id="updateProgressBtn">Update Progress</button>
+    </div>
+
+    <div class="inline">
+        <p><strong>Progress Score:</strong> <span id="progressScore"></span></p>
+        <p><strong>Progress Badge:</strong> <span id="progressBadge" class="badge"></span></p>
+    </div>
+
+    <canvas id="progressChart"></canvas>
 </div>
 
-<h2>Weekly Evaluation</h2>
-
-<button id="generateWeeksBtn">Generate 4 Weeks</button>
-<button id="addWeekBtn">Add Week</button>
-
-<label>Week:</label>
-<select id="weeklySelector"></select>
-
-<div id="weeklyPanel"></div>
-
-<h2>Attendance Summary</h2>
-<p><strong>Total Sessions Scheduled:</strong> <span id="totalSessionsScheduled"></span></p>
-<p><strong>Total Sessions Attended:</strong> <span id="totalSessionsAttended"></span></p>
-<p><strong>Attendance %:</strong> <span id="attendancePercent"></span></p>
-<p><strong>Attendance Badge:</strong> <span id="attendanceBadge" class="badge"></span></p>
-
-<h2>Progress</h2>
-
-<div class="inline">
-    <label>Adherence (0–10)</label>
-    <input id="adherence" type="number" min="0" max="10">
-
-    <label>Effort (0–10)</label>
-    <input id="effort" type="number" min="0" max="10">
-
-    <button id="updateProgressBtn">Update Progress</button>
+<!-- SIGNATURE -->
+<div class="section">
+    <h2>Trainer Signature</h2>
+    <textarea id="trainerSignature"></textarea>
 </div>
 
-<div class="inline">
-    <p><strong>Progress Score:</strong> <span id="progressScore"></span></p>
-    <p><strong>Progress Badge:</strong> <span id="progressBadge" class="badge"></span></p>
+<!-- SAVE + PDF -->
+<div class="section">
+    <button id="saveClientDataBtn">Save Client Data</button>
+    <button id="exportPDFBtn">Export as PDF</button>
 </div>
-
-<canvas id="progressChart"></canvas>
-
-<h2>Trainer Signature</h2>
-<textarea id="trainerSignature"></textarea>
-
-<button id="saveClientDataBtn">Save Client Data</button>
-<button id="exportPDFBtn">Export as PDF</button>
 
 <script>
-    /* ============================================================
-   DATA STRUCTURES
+/* ============================================================
+   FULL JAVASCRIPT ENGINE
    ============================================================ */
+
+/* DATA STRUCTURES */
 let trainers = JSON.parse(localStorage.getItem("evalTrainers")) || [];
 let clients = JSON.parse(localStorage.getItem("evalClients")) || {};
 let currentTrainer = null;
 let currentClient = null;
 let chartInstance = null;
 
-/* ============================================================
-   UTILITIES
-   ============================================================ */
+/* UTILITIES */
 function clearClientForm() {
     const fields = [
         "name","sex","age","date","trainerNameField",
@@ -235,9 +352,7 @@ function clearClientForm() {
     }
 }
 
-/* ============================================================
-   TRAINER & CLIENT MANAGEMENT
-   ============================================================ */
+/* TRAINER & CLIENT MANAGEMENT */
 function refreshTrainerList() {
     const sel = document.getElementById("trainerSelect");
     sel.innerHTML = "";
@@ -376,9 +491,7 @@ document.getElementById("duplicateClientBtn").addEventListener("click", () => {
     refreshClientList();
 });
 
-/* ============================================================
-   LOAD & SAVE CLIENT
-   ============================================================ */
+/* LOAD & SAVE CLIENT */
 function loadClientIntoForm() {
     if (!currentClient) return;
 
@@ -416,9 +529,13 @@ function loadClientIntoForm() {
 document.getElementById("clientSelect").addEventListener("change", () => {
     currentClient = document.getElementById("clientSelect").value;
     clearClientForm();
+    loadClientIntoForm
     loadClientIntoForm();
 });
 
+/* ============================================================
+   SAVE CLIENT DATA
+   ============================================================ */
 document.getElementById("saveClientDataBtn").addEventListener("click", () => {
     if (!currentClient) return;
 
@@ -443,229 +560,12 @@ document.getElementById("saveClientDataBtn").addEventListener("click", () => {
 });
 
 /* ============================================================
-   BODY METRICS & WORKOUT
-   ============================================================ */
-function updateBodyMetrics() {
-    const h = parseFloat(document.getElementById("height").value) || 0;
-    const cw = parseFloat(document.getElementById("currentWeight").value) || 0;
-    const dw = parseFloat(document.getElementById("desiredWeight").value) || 0;
-    const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 0;
-    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
-
-    if (h > 0 && cw > 0) {
-        const bmi = (cw / (h * h)) * 703;
-        document.getElementById("bmi").textContent = bmi.toFixed(1);
-    } else {
-        document.getElementById("bmi").textContent = "";
-    }
-
-    if (cw > 0 && dw > 0 && cw > dw) {
-        document.getElementById("weightToLose").textContent = (cw - dw).toFixed(1) + " lbs";
-    } else {
-        document.getElementById("weightToLose").textContent = "";
-    }
-
-    if (cw <= 0 || dw <= 0 || cw <= dw || spw <= 0) {
-        document.getElementById("weeksToGoal").textContent = "";
-        document.getElementById("totalSessions").textContent = "";
-        return;
-    }
-
-    const weightToLose = cw - dw;
-    const weeklyRate = sessionLength === 60 ? 1.25 : 0.75;
-    const weeks = weightToLose / weeklyRate;
-    const totalSessions = weeks * spw;
-
-    document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
-    document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
-}
-
-function updateWorkoutPlan() {
-    const goal = document.getElementById("trainingGoal").value;
-    const planDiv = document.getElementById("workoutPlan");
-
-    let text = "";
-    if (goal === "fatloss") {
-        text = "<strong>Fat Loss Plan:</strong><br>3–4 days/week full-body strength<br>20–30 min cardio<br>Compound lifts<br>High protein, slight deficit";
-    } else if (goal === "muscle") {
-        text = "<strong>Muscle Gain Plan:</strong><br>4–5 days/week split training<br>Heavy compound lifts<br>High volume<br>Slight calorie surplus";
-    } else if (goal === "recomp") {
-        text = "<strong>Body Recomposition Plan:</strong><br>3–4 days strength<br>2–3 days cardio<br>Mix intensity & volume<br>Maintenance calories";
-    }
-
-    planDiv.innerHTML = text;
-}
-
-/* ============================================================
-   NUTRITION CALCULATOR
-   ============================================================ */
-function updateNutrition() {
-    const sex = document.getElementById("sex").value;
-    const age = parseFloat(document.getElementById("age").value) || 0;
-    const height = parseFloat(document.getElementById("height").value) || 0;
-    const weight = parseFloat(document.getElementById("currentWeight").value) || 0;
-    const activity = document.getElementById("activityLevel").value;
-    const goal = document.getElementById("trainingGoal").value;
-
-    if (!sex || !age || !height || !weight || !activity) return;
-
-    let bmr = 0;
-    if (sex === "male") {
-        bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) + 5;
-    } else {
-        bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) - 161;
-    }
-
-    const activityMap = {
-        sedentary: 1.2,
-        light: 1.375,
-        moderate: 1.55,
-        intense: 1.725,
-        extreme: 1.9
-    };
-
-    const tdee = bmr * (activityMap[activity] || 1.2);
-
-    let targetCalories = tdee;
-    if (goal === "fatloss") targetCalories -= 300;
-    if (goal === "muscle") targetCalories += 300;
-
-    const protein = weight * 0.8;
-    const fats = (targetCalories * 0.25) / 9;
-    const carbs = (targetCalories - (protein * 4) - (fats * 9)) / 4;
-
-    document.getElementById("bmrOutput").textContent = Math.round(bmr);
-    document.getElementById("tdeeOutput").textContent = Math.round(tdee);
-    document.getElementById("calorieTargetOutput").textContent = Math.round(targetCalories);
-
-    document.getElementById("proteinTarget").textContent = Math.round(protein) + " g";
-    document.getElementById("fatTarget").textContent = Math.round(fats) + " g";
-    document.getElementById("carbTarget").textContent = Math.round(carbs) + " g";
-
-    let plan = "";
-    if (goal === "fatloss") {
-        plan = "Calorie deficit with high protein, moderate carbs, moderate fats.";
-    } else if (goal === "muscle") {
-        plan = "Slight surplus with high protein, higher carbs, moderate fats.";
-    } else {
-        plan = "Maintenance calories with balanced macros.";
-    }
-
-    document.getElementById("nutritionPlan").textContent = plan;
-}
-
-/* ============================================================
-   WEEKLY EVALUATION
-   ============================================================ */
-function renderWeeklySelector() {
-    if (!currentClient) return;
-
-    const selector = document.getElementById("weeklySelector");
-    selector.innerHTML = "";
-
-    const weekly = clients[currentClient].weekly || [];
-
-    weekly.forEach((w, idx) => {
-        const opt = document.createElement("option");
-        opt.value = idx;
-        opt.textContent = w.label;
-        selector.appendChild(opt);
-    });
-
-    if (weekly.length > 0) {
-        selector.value = weekly.length - 1;
-        renderWeeklyPanel();
-    } else {
-        document.getElementById("weeklyPanel").innerHTML = "";
-    }
-}
-
-function renderWeeklyPanel() {
-    const panel = document.getElementById("weeklyPanel");
-    const selector = document.getElementById("weeklySelector");
-
-    panel.innerHTML = "";
-
-    const weekIndex = parseInt(selector.value);
-    if (isNaN(weekIndex) || !currentClient) return;
-
-    const weekly = clients[currentClient].weekly || [];
-    if (!weekly[weekIndex]) return;
-
-    const data = weekly[weekIndex];
-
-    panel.innerHTML = `
-        <table>
-            <tr><th>Week Label</th><td>${data.label}</td></tr>
-            <tr><th>Sessions Scheduled</th><td><input id="w_sessionsScheduled" type="number" value="${data.sessionsScheduled || ""}"></td></tr>
-            <tr><th>Sessions Attended</th><td><input id="w_sessionsAttended" type="number" value="${data.sessionsAttended || ""}"></td></tr>
-            <tr><th>Trainer Notes</th><td><textarea id="w_notes">${data.notes || ""}</textarea></td></tr>
-        </table>
-        <button id="w_saveBtn">Save Weekly Data</button>
-    `;
-
-    document.getElementById("w_saveBtn").addEventListener("click", () => {
-        data.sessionsScheduled = parseFloat(document.getElementById("w_sessionsScheduled").value) || 0;
-        data.sessionsAttended = parseFloat(document.getElementById("w_sessionsAttended").value) || 0;
-        data.notes = document.getElementById("w_notes").value;
-
-        weekly[weekIndex] = data;
-        clients[currentClient].weekly = weekly;
-
-        localStorage.setItem("evalClients", JSON.stringify(clients));
-
-        updateAttendanceSummary();
-        updateChart();
-    });
-}
-
-function generateWeeks(count = 4) {
-    if (!currentClient) return;
-
-    const weekly = clients[currentClient].weekly || [];
-    const existing = weekly.length;
-
-    for (let i = existing; i < existing + count; i++) {
-        weekly.push({
-            label: `Week ${i + 1}`,
-            sessionsScheduled: 0,
-            sessionsAttended: 0,
-            notes: ""
-        });
-    }
-
-    clients[currentClient].weekly = weekly;
-    localStorage.setItem("evalClients", JSON.stringify(clients));
-
-    renderWeeklySelector();
-}
-
-document.getElementById("generateWeeksBtn").addEventListener("click", () => generateWeeks(4));
-document.getElementById("addWeekBtn").addEventListener("click", () => generateWeeks(1));
-document.getElementById("weeklySelector").addEventListener("change", renderWeeklyPanel);
-
-/* ============================================================
    ATTENDANCE SUMMARY
    ============================================================ */
 function updateAttendanceSummary() {
     if (!currentClient) return;
 
     const weekly = clients[currentClient].weekly || [];
-
-    let totalScheduled = 0;
-    let totalAttended = 0;
-
-    weekly.forEach(w => {
-        totalScheduled += w.sessionsScheduled || 0;
-        totalAttended += w
-        /* ============================================================
-   ATTENDANCE SUMMARY
-   ============================================================ */
-function updateAttendanceSummary() {
-    if (!currentClient) return;
-
-    const weekly = clients[currentClient].weekly || [];
-
     let totalScheduled = 0;
     let totalAttended = 0;
 
@@ -681,10 +581,10 @@ function updateAttendanceSummary() {
     document.getElementById("totalSessionsAttended").textContent = totalAttended;
 
     let badge = "";
-    if (percent >= 90) badge = "Excellent";
-    else if (percent >= 75) badge = "Good";
-    else if (percent >= 50) badge = "Fair";
-    else badge = "Needs Improvement";
+    if (percent >= 90) badge = "🔥 Excellent";
+    else if (percent >= 75) badge = "💪 Good";
+    else if (percent >= 50) badge = "🙂 Fair";
+    else badge = "⚠ Needs Improvement";
 
     document.getElementById("attendanceBadge").textContent = badge;
 }
@@ -703,10 +603,10 @@ document.getElementById("updateProgressBtn").addEventListener("click", () => {
     document.getElementById("progressScore").textContent = score.toFixed(1) + "%";
 
     let badge = "";
-    if (score >= 90) badge = "Outstanding";
-    else if (score >= 75) badge = "Strong";
-    else if (score >= 50) badge = "Moderate";
-    else badge = "Low";
+    if (score >= 90) badge = "🏆 Outstanding";
+    else if (score >= 75) badge = "💪 Strong";
+    else if (score >= 50) badge = "🙂 Moderate";
+    else badge = "⚠ Low";
 
     document.getElementById("progressBadge").textContent = badge;
 
@@ -734,9 +634,9 @@ function updateChart() {
             datasets: [{
                 label: "Sessions Attended",
                 data: attended,
-                borderColor: "#1f4e79",
-                backgroundColor: "rgba(31,78,121,0.2)",
-                borderWidth: 2,
+                borderColor: "#f15a29",
+                backgroundColor: "rgba(241,90,41,0.2)",
+                borderWidth: 3,
                 tension: 0.3,
                 fill: true
             }]
@@ -784,7 +684,7 @@ document.getElementById("exportPDFBtn").addEventListener("click", () => {
 });
 
 /* ============================================================
-   INITIALIZE
+   INITIALIZE SYSTEM
    ============================================================ */
 refreshTrainerList();
 refreshClientList();

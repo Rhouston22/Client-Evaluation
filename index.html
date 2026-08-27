@@ -2,437 +2,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Crunch Fitness Evaluation System</title>
+<title>Trainer Evaluation System</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- PDF Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background:#f4f7fb;
-        margin:20px;
-        color:#333;
-    }
-    h1 {
-        color:#1f4e79;
-        margin-top:10px;
-        font-weight:700;
-        letter-spacing:0.5px;
-    }
-
-    .section {
-        background:#ffffff;
-        padding:22px;
-        margin-bottom:22px;
-        border-radius:10px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.08);
-    }
-
-    .section-title {
-        font-size:1.25rem;
-        font-weight:600;
-        margin-bottom:12px;
-        border-bottom:2px solid #d9e2ef;
-        padding-bottom:6px;
-        display:flex;
-        align-items:center;
-        gap:10px;
-        color:#1f4e79;
-    }
-    .section-title img {
-        width:22px;
-        height:22px;
-        opacity:0.9;
-    }
-
-    table {
-        width:100%;
-        border-collapse:collapse;
-        margin-top:10px;
-    }
-    th, td {
-        border:1px solid #e1e7f0;
-        padding:10px;
-        font-size:0.95rem;
-        vertical-align:top;
-    }
-    th {
-        background:#eef3fa;
-        font-weight:600;
-        color:#1f4e79;
-    }
-
-    input, select, textarea {
-        width:95%;
-        padding:7px;
-        border:1px solid #cdd6e4;
-        border-radius:6px;
-        box-sizing:border-box;
-        font-size:0.95rem;
-    }
-    textarea {
-        min-height:70px;
-    }
-
-    button {
-        padding:9px 14px;
-        margin-right:6px;
-        margin-top:5px;
-        background:#1f4e79;
-        color:#fff;
-        border:none;
-        border-radius:6px;
-        cursor:pointer;
-        font-size:0.9rem;
-        font-weight:600;
-        letter-spacing:0.3px;
-    }
-    button:hover {
-        background:#163a5c;
-    }
-
-    .inline {
-        display:inline-block;
-        margin-right:20px;
-        vertical-align:top;
-    }
-
-    @media print {
-        button { display:none; }
-        body { background:#fff; }
-        .section { box-shadow:none; }
-        .logo-wrapper { display:none; }
-    }
-
-    .logo-wrapper {
-        text-align:center;
-        margin-bottom:10px;
-    }
-    .logo-placeholder {
-        display:inline-block;
-        padding:10px 20px;
-        border-radius:8px;
-        background:#f15a29;
-        color:#fff;
-        font-weight:bold;
-        font-size:1.4rem;
-        letter-spacing:1px;
-        text-transform:uppercase;
-    }
-    .logo-subtext {
-        font-size:0.8rem;
-        color:#444;
-        margin-top:4px;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { margin-top: 30px; }
+    .inline { display: inline-block; vertical-align: top; margin-right: 20px; }
+    label { display: block; margin-top: 5px; }
+    input, select, textarea { width: 220px; margin-bottom: 5px; }
+    textarea { width: 300px; height: 80px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 5px 8px; }
+    .badge { font-weight: bold; }
+    #progressChart { max-width: 600px; }
+    button { margin-top: 5px; }
 </style>
 </head>
 
 <body>
 
-<div class="logo-wrapper">
-    <div class="logo-placeholder">CRUNCH FITNESS</div>
-    <div class="logo-subtext">Gym Fitness Evaluation System</div>
+<h1>Client Evaluation System</h1>
+
+<!-- TRAINER & CLIENT -->
+<div class="inline">
+    <h2>Trainer & Client</h2>
+
+    <label>Trainer:</label>
+    <select id="trainerSelect"></select>
+    <input id="newTrainerName" placeholder="Add trainer name">
+    <button id="addTrainerBtn">Add Trainer</button>
+    <button id="removeTrainerBtn">Remove Trainer</button>
+
+    <label>Client:</label>
+    <select id="clientSelect"></select>
+    <input id="newClientName" placeholder="Add client name">
+    <button id="addClientBtn">Add Client</button>
+    <button id="deleteClientBtn">Delete Client</button>
+    <button id="duplicateClientBtn">Duplicate Client</button>
 </div>
 
-<h1>Trainer & Client Evaluation System</h1>
+<!-- CLIENT INFO -->
+<div class="inline">
+    <h2>Client Info</h2>
 
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/conference-call.png">
-        Trainer & Client Management
-    </div>
+    <label>Name</label>
+    <input id="name">
 
-    <div class="inline">
-        <strong>Trainer:</strong><br>
-        <select id="trainerSelect"></select><br>
-        <input id="newTrainerName" placeholder="Add trainer name">
-        <button id="addTrainerBtn">Add Trainer</button>
-        <button id="removeTrainerBtn">Remove Trainer</button>
-    </div>
+    <label>Sex</label>
+    <select id="sex">
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
 
-    <div class="inline">
-        <strong>Client:</strong><br>
-        <select id="clientSelect"></select><br>
-        <input id="newClientName" placeholder="Add client name">
-        <button id="addClientBtn">Add Client</button>
-        <button id="deleteClientBtn">Delete Client</button>
-    </div>
+    <label>Age</label>
+    <input id="age" type="number">
 
-    <div class="inline">
-        <button id="saveClientDataBtn">Save Client Data</button>
-        <button id="loadClientDataBtn">Load Client Data</button>
-        <button id="monthlyUpdateBtn">Monthly Snapshot</button>
-        <button id="exportPDFBtn">Export PDF</button>
-    </div>
+    <label>Date</label>
+    <input id="date" type="date">
+
+    <label>Trainer (auto)</label>
+    <input id="trainerNameField" readonly>
 </div>
 
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/combo-chart.png">
-        Trainer Dashboard (Snapshots)
-    </div>
+<h2>Body Metrics</h2>
 
-    <table>
-        <tr>
-            <th>Trainer</th>
-            <th>Client</th>
-            <th>Date</th>
-            <th>Weight</th>
-            <th>Body Fat %</th>
-            <th>BMI</th>
-            <th>Goal</th>
-            <th>Progress Score</th>
-        </tr>
-        <tbody id="dashboardBody"></tbody>
-    </table>
-</div>
-<!-- CLIENT INFORMATION -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/user.png">
-        Client Information
-    </div>
+<div class="inline">
+    <label>Height (inches)</label>
+    <input id="height" type="number">
 
-    <table>
-        <tr><th>Client Name</th><td><input id="name"></td></tr>
-        <tr><th>Sex</th>
-            <td>
-                <select id="sex">
-                    <option value="">Select</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                </select>
-            </td>
-        </tr>
-        <tr><th>Age</th><td><input id="age" type="number"></td></tr>
-        <tr><th>Date</th><td><input id="date" type="date"></td></tr>
-        <tr><th>Trainer</th><td><input id="trainerNameField"></td></tr>
-    </table>
+    <label>Current Weight (lbs)</label>
+    <input id="currentWeight" type="number">
+
+    <label>Desired Weight (lbs)</label>
+    <input id="desiredWeight" type="number">
+
+    <label>Body Fat %</label>
+    <input id="bodyFat" type="number">
+
+    <label>Muscle %</label>
+    <input id="musclePercent" type="number">
 </div>
 
-<!-- BODY METRICS -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/scale.png">
-        Body Metrics
-    </div>
+<div class="inline">
+    <label>Session Length</label>
+    <select id="sessionLength">
+        <option value="30">30 minutes</option>
+        <option value="60">60 minutes</option>
+    </select>
 
-    <table>
-        <tr><th>Height (inches)</th><td><input id="height" type="number"></td></tr>
-        <tr><th>Current Weight (lbs)</th><td><input id="currentWeight" type="number"></td></tr>
-        <tr><th>Desired Weight (lbs)</th><td><input id="desiredWeight" type="number"></td></tr>
-        <tr><th>Body Fat %</th><td><input id="bodyFat" type="number"></td></tr>
-        <tr><th>Muscle %</th><td><input id="musclePercent" type="number"></td></tr>
-        <tr><th>BMI</th><td id="bmi"></td></tr>
-        <tr><th>Weight to Lose</th><td id="weightToLose"></td></tr>
-        <tr><th>Weeks to Goal</th><td id="weeksToGoal"></td></tr>
-        <tr><th>Total Sessions Needed</th><td id="totalSessions"></td></tr>
-    </table>
+    <label>Sessions per Week</label>
+    <input id="sessionsPerWeek" type="number">
+
+    <label>Training Goal</label>
+    <select id="trainingGoal">
+        <option value="">Select</option>
+        <option value="fatloss">Fat Loss</option>
+        <option value="muscle">Gain Muscle</option>
+        <option value="recomp">Body Recomposition</option>
+    </select>
+
+    <label>Activity Level</label>
+    <select id="activityLevel">
+        <option value="">Select</option>
+        <option value="sedentary">Sedentary</option>
+        <option value="light">Light</option>
+        <option value="moderate">Moderate</option>
+        <option value="intense">Intense</option>
+        <option value="extreme">Extreme</option>
+    </select>
 </div>
 
-<!-- WORKOUT COMMITMENT -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/dumbbell.png">
-        Workout Commitment
-    </div>
+<h3>Body Metrics Results</h3>
+<p><strong>BMI:</strong> <span id="bmi"></span></p>
+<p><strong>Weight to Lose:</strong> <span id="weightToLose"></span></p>
+<p><strong>Weeks to Goal:</strong> <span id="weeksToGoal"></span></p>
+<p><strong>Total Sessions Needed:</strong> <span id="totalSessions"></span></p>
 
-    <table>
-       <select id="sessionLength">
-    <option value="30">30 minutes</option>
-    <option value="60">60 minutes</option>
-</select>
+<h3>Workout Plan</h3>
+<div id="workoutPlan"></div>
 
-        <tr><th>Sessions Per Week</th><td><input id="sessionsPerWeek" type="number"></td></tr>
-    </table>
+<h2>Nutrition Calculator</h2>
+
+<div class="inline">
+    <p><strong>BMR:</strong> <span id="bmrOutput"></span></p>
+    <p><strong>TDEE:</strong> <span id="tdeeOutput"></span></p>
+    <p><strong>Target Calories:</strong> <span id="calorieTargetOutput"></span></p>
 </div>
 
-<!-- TRAINING GOAL -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/goal.png">
-        Training Goal
-    </div>
-
-    <table>
-        <tr>
-            <th>Goal</th>
-            <td>
-                <select id="trainingGoal">
-                    <option value="">Select</option>
-                    <option value="fatloss">Fat Loss</option>
-                    <option value="muscle">Muscle Gain</option>
-                    <option value="recomp">Body Recomposition</option>
-                </select>
-            </td>
-        </tr>
-        <tr><th>Workout Plan</th><td id="workoutPlan"></td></tr>
-    </table>
+<div class="inline">
+    <p><strong>Protein:</strong> <span id="proteinTarget"></span></p>
+    <p><strong>Fats:</strong> <span id="fatTarget"></span></p>
+    <p><strong>Carbs:</strong> <span id="carbTarget"></span></p>
 </div>
 
-<!-- NUTRITION CALCULATOR -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/meal.png">
-        Nutrition Calculator
-    </div>
-
-    <table>
-        <tr><th>Activity Level</th>
-            <td>
-                <select id="activityLevel">
-                    <option value="">Select</option>
-                    <option value="1.2">Sedentary</option>
-                    <option value="1.375">Lightly Active</option>
-                    <option value="1.55">Moderately Active</option>
-                    <option value="1.725">Very Active</option>
-                    <option value="1.9">Extremely Active</option>
-                </select>
-            </td>
-        </tr>
-        <tr><th>BMR</th><td id="bmr"></td></tr>
-        <tr><th>TDEE</th><td id="tdee"></td></tr>
-        <tr><th>Target Calories</th><td id="targetCalories"></td></tr>
-        <tr><th>Protein (g)</th><td id="proteinGrams"></td></tr>
-        <tr><th>Carbs (g)</th><td id="carbsGrams"></td></tr>
-        <tr><th>Fats (g)</th><td id="fatsGrams"></td></tr>
-        <tr><th>Nutrition Plan</th><td id="nutritionPlan"></td></tr>
-    </table>
+<div>
+    <p><strong>Nutrition Plan:</strong></p>
+    <div id="nutritionPlan"></div>
 </div>
 
-<!-- WEEKLY EVALUATION -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/calendar.png">
-        Weekly Evaluation
-    </div>
+<h2>Weekly Evaluation</h2>
 
-    <button id="generateWeeksBtn">Generate 4 Weeks</button>
-    <button id="addWeekBtn">Add Week</button>
+<button id="generateWeeksBtn">Generate 4 Weeks</button>
+<button id="addWeekBtn">Add Week</button>
 
-    <label><strong>Select Week:</strong></label>
-    <select id="weeklySelector"></select>
+<label>Week:</label>
+<select id="weeklySelector"></select>
 
-    <div id="weeklyPanel" style="margin-top:15px;"></div>
-</div>
-<!-- MONTHLY TRAINER NOTES -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/note.png">
-        Monthly Trainer Notes
-    </div>
+<div id="weeklyPanel"></div>
 
-    <button id="generateMonthlyBtn">Generate 4 Weeks</button>
-    <button id="addMonthlyWeekBtn">Add Week</button>
+<h2>Attendance Summary</h2>
+<p><strong>Total Sessions Scheduled:</strong> <span id="totalSessionsScheduled"></span></p>
+<p><strong>Total Sessions Attended:</strong> <span id="totalSessionsAttended"></span></p>
+<p><strong>Attendance %:</strong> <span id="attendancePercent"></span></p>
+<p><strong>Attendance Badge:</strong> <span id="attendanceBadge" class="badge"></span></p>
 
-    <label><strong>Select Week:</strong></label>
-    <select id="monthlySelector"></select>
+<h2>Progress</h2>
 
-    <div id="monthlyPanel" style="margin-top:15px;"></div>
+<div class="inline">
+    <label>Adherence (0–10)</label>
+    <input id="adherence" type="number" min="0" max="10">
+
+    <label>Effort (0–10)</label>
+    <input id="effort" type="number" min="0" max="10">
+
+    <button id="updateProgressBtn">Update Progress</button>
 </div>
 
-<!-- ATTENDANCE SUMMARY -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/attendance.png">
-        Attendance Summary
-    </div>
-
-    <table>
-        <tr><th>Total Sessions Scheduled</th><td id="totalSessionsScheduled"></td></tr>
-        <tr><th>Total Sessions Attended</th><td id="totalSessionsAttended"></td></tr>
-        <tr><th>Attendance %</th><td id="attendancePercent"></td></tr>
-        <tr><th>Attendance Badge</th><td id="attendanceBadge"></td></tr>
-    </table>
+<div class="inline">
+    <p><strong>Progress Score:</strong> <span id="progressScore"></span></p>
+    <p><strong>Progress Badge:</strong> <span id="progressBadge" class="badge"></span></p>
 </div>
 
-<!-- PROGRESS SCORE -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/speed.png">
-        Progress Score
-    </div>
+<canvas id="progressChart"></canvas>
 
-    <table>
-        <tr><th>Adherence (0–10)</th><td><input id="adherence" type="number"></td></tr>
-        <tr><th>Effort (0–10)</th><td><input id="effort" type="number"></td></tr>
-        <tr><th>Progress Score</th><td id="progressScore"></td></tr>
-        <tr><th>Progress Badge</th><td id="progressBadge"></td></tr>
-    </table>
+<h2>Trainer Signature</h2>
+<textarea id="trainerSignature"></textarea>
 
-    <button id="updateProgressBtn">Update Progress Score</button>
-</div>
+<button id="saveClientDataBtn">Save Client Data</button>
+<button id="exportPDFBtn">Export as PDF</button>
 
-<!-- TRAINER SIGNATURE -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/signature.png">
-        Trainer Signature
-    </div>
-
-    <textarea id="trainerSignature" placeholder="Trainer signature or notes"></textarea>
-</div>
-
-<!-- PROGRESSION CHART -->
-<div class="section">
-    <div class="section-title">
-        <img src="https://img.icons8.com/ios-filled/50/1f4e79/line-chart.png">
-        Progress Chart
-    </div>
-
-    <canvas id="progressChart" height="120"></canvas>
-</div>
-
-<!-- SCRIPT LOADERS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<!-- MAIN JAVASCRIPT WRAPPER -->
 <script>
-window.addEventListener("DOMContentLoaded", function () {
-/* ============================================================
-/* ============================================================
-   TRAINER & CLIENT MANAGEMENT (CLEAN + DUPLICATE FEATURE)
+    /* ============================================================
+   DATA STRUCTURES
    ============================================================ */
-
-let trainers = JSON.parse(localStorage.getItem("crunchTrainers")) || [];
-let clients = JSON.parse(localStorage.getItem("crunchClients")) || {};
+let trainers = JSON.parse(localStorage.getItem("evalTrainers")) || [];
+let clients = JSON.parse(localStorage.getItem("evalClients")) || {};
 let currentTrainer = null;
 let currentClient = null;
+let chartInstance = null;
 
-/* ---------------------------
-   CLEAR FORM
----------------------------- */
-
+/* ============================================================
+   UTILITIES
+   ============================================================ */
 function clearClientForm() {
     const fields = [
         "name","sex","age","date","trainerNameField",
         "height","currentWeight","desiredWeight","bodyFat","musclePercent",
         "sessionLength","sessionsPerWeek","trainingGoal","activityLevel",
-        "trainerSignature"
+        "trainerSignature","adherence","effort"
     ];
-
     fields.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
     });
 
-    // Nutrition outputs
-    ["bmrOutput","tdeeOutput","calorieTargetOutput",
-     "proteinTarget","fatTarget","carbTarget"].forEach(id => {
+    [
+        "bmi","weightToLose","weeksToGoal","totalSessions",
+        "bmrOutput","tdeeOutput","calorieTargetOutput",
+        "proteinTarget","fatTarget","carbTarget",
+        "attendancePercent","totalSessionsScheduled","totalSessionsAttended",
+        "attendanceBadge","progressScore","progressBadge"
+    ].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = "";
     });
 
-    // Body metrics outputs
-    ["bmi","weightToLose","weeksToGoal","totalSessions"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = "";
-    });
+    document.getElementById("workoutPlan").innerHTML = "";
+    document.getElementById("nutritionPlan").innerHTML = "";
+    document.getElementById("weeklyPanel").innerHTML = "";
+    document.getElementById("weeklySelector").innerHTML = "";
+
+    if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+    }
 }
 
-/* ---------------------------
-   TRAINER MANAGEMENT
----------------------------- */
-
+/* ============================================================
+   TRAINER & CLIENT MANAGEMENT
+   ============================================================ */
 function refreshTrainerList() {
     const sel = document.getElementById("trainerSelect");
     sel.innerHTML = "";
@@ -447,56 +252,9 @@ function refreshTrainerList() {
     if (trainers.length > 0) {
         sel.value = trainers[0];
         currentTrainer = trainers[0];
+        document.getElementById("trainerNameField").value = currentTrainer;
     }
 }
-
-document.getElementById("addTrainerBtn").addEventListener("click", () => {
-    const name = document.getElementById("newTrainerName").value.trim();
-    if (!name) return;
-
-    if (!trainers.includes(name)) {
-        trainers.push(name);
-        localStorage.setItem("crunchTrainers", JSON.stringify(trainers));
-    }
-
-    document.getElementById("newTrainerName").value = "";
-    currentClient = null;
-
-    clearClientForm();
-    refreshTrainerList();
-    refreshClientList();
-});
-
-document.getElementById("removeTrainerBtn").addEventListener("click", () => {
-    if (!currentTrainer) return;
-
-    trainers = trainers.filter(t => t !== currentTrainer);
-    localStorage.setItem("crunchTrainers", JSON.stringify(trainers));
-
-    // Remove all clients belonging to this trainer
-    Object.keys(clients).forEach(c => {
-        if (clients[c].trainer === currentTrainer) {
-            delete clients[c];
-        }
-    });
-    localStorage.setItem("crunchClients", JSON.stringify(clients));
-
-    currentTrainer = null;
-    currentClient = null;
-
-    clearClientForm();
-    refreshTrainerList();
-    refreshClientList();
-});
-
-document.getElementById("trainerSelect").addEventListener("change", () => {
-    currentTrainer = document.getElementById("trainerSelect").value;
-    refreshClientList();
-});
-
-/* ---------------------------
-   CLIENT MANAGEMENT
----------------------------- */
 
 function refreshClientList() {
     const sel = document.getElementById("clientSelect");
@@ -521,6 +279,53 @@ function refreshClientList() {
     }
 }
 
+document.getElementById("addTrainerBtn").addEventListener("click", () => {
+    const name = document.getElementById("newTrainerName").value.trim();
+    if (!name) return;
+
+    if (!trainers.includes(name)) {
+        trainers.push(name);
+        localStorage.setItem("evalTrainers", JSON.stringify(trainers));
+    }
+
+    document.getElementById("newTrainerName").value = "";
+    currentTrainer = name;
+    document.getElementById("trainerNameField").value = currentTrainer;
+
+    clearClientForm();
+    refreshTrainerList();
+    refreshClientList();
+});
+
+document.getElementById("removeTrainerBtn").addEventListener("click", () => {
+    if (!currentTrainer) return;
+
+    trainers = trainers.filter(t => t !== currentTrainer);
+    localStorage.setItem("evalTrainers", JSON.stringify(trainers));
+
+    Object.keys(clients).forEach(c => {
+        if (clients[c].trainer === currentTrainer) delete clients[c];
+    });
+
+    localStorage.setItem("evalClients", JSON.stringify(clients));
+
+    currentTrainer = null;
+    currentClient = null;
+
+    clearClientForm();
+    refreshTrainerList();
+    refreshClientList();
+});
+
+document.getElementById("trainerSelect").addEventListener("change", () => {
+    currentTrainer = document.getElementById("trainerSelect").value;
+    document.getElementById("trainerNameField").value = currentTrainer;
+
+    currentClient = null;
+    clearClientForm();
+    refreshClientList();
+});
+
 document.getElementById("addClientBtn").addEventListener("click", () => {
     const name = document.getElementById("newClientName").value.trim();
     if (!name || !currentTrainer) return;
@@ -529,18 +334,19 @@ document.getElementById("addClientBtn").addEventListener("click", () => {
         trainer: currentTrainer,
         info: {},
         weekly: [],
-        monthly: [],
-        attendance: {},
-        progress: {},
-        snapshots: []
+        attendance: { scheduled: 0, attended: 0 },
+        progress: {}
     };
 
-    localStorage.setItem("crunchClients", JSON.stringify(clients));
+    localStorage.setItem("evalClients", JSON.stringify(clients));
 
     document.getElementById("newClientName").value = "";
     currentClient = name;
 
     clearClientForm();
+    document.getElementById("name").value = name;
+    document.getElementById("trainerNameField").value = currentTrainer;
+
     refreshClientList();
 });
 
@@ -548,16 +354,12 @@ document.getElementById("deleteClientBtn").addEventListener("click", () => {
     if (!currentClient) return;
 
     delete clients[currentClient];
-    localStorage.setItem("crunchClients", JSON.stringify(clients));
+    localStorage.setItem("evalClients", JSON.stringify(clients));
 
     currentClient = null;
     clearClientForm();
     refreshClientList();
 });
-
-/* ---------------------------
-   DUPLICATE CLIENT FEATURE
----------------------------- */
 
 document.getElementById("duplicateClientBtn").addEventListener("click", () => {
     if (!currentClient) return;
@@ -568,15 +370,15 @@ document.getElementById("duplicateClientBtn").addEventListener("click", () => {
     clients[newName] = JSON.parse(JSON.stringify(original));
     clients[newName].trainer = currentTrainer;
 
-    localStorage.setItem("crunchClients", JSON.stringify(clients));
+    localStorage.setItem("evalClients", JSON.stringify(clients));
 
     currentClient = newName;
     refreshClientList();
 });
 
-/* ---------------------------
-   LOAD CLIENT INTO FORM
----------------------------- */
+/* ============================================================
+   LOAD & SAVE CLIENT
+   ============================================================ */
 function loadClientIntoForm() {
     if (!currentClient) return;
 
@@ -586,7 +388,7 @@ function loadClientIntoForm() {
     document.getElementById("sex").value = data.sex || "";
     document.getElementById("age").value = data.age || "";
     document.getElementById("date").value = data.date || "";
-    document.getElementById("trainerNameField").value = data.trainer || "";
+    document.getElementById("trainerNameField").value = clients[currentClient].trainer || "";
 
     document.getElementById("height").value = data.height || "";
     document.getElementById("currentWeight").value = data.currentWeight || "";
@@ -594,23 +396,28 @@ function loadClientIntoForm() {
     document.getElementById("bodyFat").value = data.bodyFat || "";
     document.getElementById("musclePercent").value = data.musclePercent || "";
 
-    document.getElementById("sessionLength").value = data.sessionLength || "";
+    document.getElementById("sessionLength").value = data.sessionLength || "30";
     document.getElementById("sessionsPerWeek").value = data.sessionsPerWeek || "";
     document.getElementById("trainingGoal").value = data.trainingGoal || "";
     document.getElementById("activityLevel").value = data.activityLevel || "";
 
     document.getElementById("trainerSignature").value = data.signature || "";
+    document.getElementById("adherence").value = clients[currentClient].progress?.adherence || "";
+    document.getElementById("effort").value = clients[currentClient].progress?.effort || "";
 
-    // ⭐ CRITICAL FIX
     updateBodyMetrics();
+    updateWorkoutPlan();
     updateNutrition();
+    renderWeeklySelector();
+    updateAttendanceSummary();
+    updateChart();
 }
 
-
-
-/* ---------------------------
-   SAVE CLIENT DATA
----------------------------- */
+document.getElementById("clientSelect").addEventListener("change", () => {
+    currentClient = document.getElementById("clientSelect").value;
+    clearClientForm();
+    loadClientIntoForm();
+});
 
 document.getElementById("saveClientDataBtn").addEventListener("click", () => {
     if (!currentClient) return;
@@ -632,79 +439,19 @@ document.getElementById("saveClientDataBtn").addEventListener("click", () => {
         signature: document.getElementById("trainerSignature").value
     };
 
-    localStorage.setItem("crunchClients", JSON.stringify(clients));
+    localStorage.setItem("evalClients", JSON.stringify(clients));
 });
 
-/* ---------------------------
-   INITIAL LOAD
----------------------------- */
-
-refreshTrainerList();
-refreshClientList();
-
 /* ============================================================
-   DASHBOARD SNAPSHOT SYSTEM
+   BODY METRICS & WORKOUT
    ============================================================ */
-
-document.getElementById("monthlyUpdateBtn").addEventListener("click", () => {
-    if (!currentClient) return;
-
-    const info = clients[currentClient].info;
-    if (!info) return;
-
-    const snapshot = {
-        trainer: info.trainer || "",
-        client: currentClient,
-        date: info.date || "",
-        weight: info.currentWeight || "",
-        bodyFat: info.bodyFat || "",
-        bmi: document.getElementById("bmi").textContent,
-        goal: info.trainingGoal || "",
-        progressScore: document.getElementById("progressScore").textContent
-    };
-
-    clients[currentClient].snapshots.push(snapshot);
-    updateDashboard();
-});
-
-/* Update dashboard table */
-function updateDashboard() {
-    const body = document.getElementById("dashboardBody");
-    body.innerHTML = "";
-
-    Object.keys(clients).forEach(client => {
-        clients[client].snapshots.forEach(s => {
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${s.trainer}</td>
-                <td>${s.client}</td>
-                <td>${s.date}</td>
-                <td>${s.weight}</td>
-                <td>${s.bodyFat}</td>
-                <td>${s.bmi}</td>
-                <td>${s.goal}</td>
-                <td>${s.progressScore}</td>
-            `;
-
-            body.appendChild(row);
-        });
-    });
-}
-
-document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
-/* ============================================================
-   BODY METRICS & WORKOUT COMMITMENT
-   ============================================================ */
-
 function updateBodyMetrics() {
     const h = parseFloat(document.getElementById("height").value) || 0;
     const cw = parseFloat(document.getElementById("currentWeight").value) || 0;
     const dw = parseFloat(document.getElementById("desiredWeight").value) || 0;
-    const bf = parseFloat(document.getElementById("bodyFat").value) || 0;
-    const mp = parseFloat(document.getElementById("musclePercent").value) || 0;
+    const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 0;
+    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
 
-    // BMI
     if (h > 0 && cw > 0) {
         const bmi = (cw / (h * h)) * 703;
         document.getElementById("bmi").textContent = bmi.toFixed(1);
@@ -712,22 +459,11 @@ function updateBodyMetrics() {
         document.getElementById("bmi").textContent = "";
     }
 
-    // Weight to lose
     if (cw > 0 && dw > 0 && cw > dw) {
-        document.getElementById("weightToLose").textContent =
-            (cw - dw).toFixed(1) + " lbs";
+        document.getElementById("weightToLose").textContent = (cw - dw).toFixed(1) + " lbs";
     } else {
         document.getElementById("weightToLose").textContent = "";
     }
-
-    updateWeeksToGoal();
-}
-
-function updateWeeksToGoal() {
-    const cw = parseFloat(document.getElementById("currentWeight").value) || 0;
-    const dw = parseFloat(document.getElementById("desiredWeight").value) || 0;
-    const spw = parseFloat(document.getElementById("sessionsPerWeek").value) || 0;
-    const sessionLength = parseFloat(document.getElementById("sessionLength").value) || 30;
 
     if (cw <= 0 || dw <= 0 || cw <= dw || spw <= 0) {
         document.getElementById("weeksToGoal").textContent = "";
@@ -736,23 +472,13 @@ function updateWeeksToGoal() {
     }
 
     const weightToLose = cw - dw;
-
-    // Weekly weight‑loss rate based on session length
     const weeklyRate = sessionLength === 60 ? 1.25 : 0.75;
-
     const weeks = weightToLose / weeklyRate;
     const totalSessions = weeks * spw;
 
-    document.getElementById("weeksToGoal").textContent =
-        weeks.toFixed(1) + " weeks";
-
-    document.getElementById("totalSessions").textContent =
-        Math.round(totalSessions) + " sessions";
+    document.getElementById("weeksToGoal").textContent = weeks.toFixed(1) + " weeks";
+    document.getElementById("totalSessions").textContent = Math.round(totalSessions) + " sessions";
 }
-
-/* ============================================================
-   WORKOUT PLAN ENGINE
-   ============================================================ */
 
 function updateWorkoutPlan() {
     const goal = document.getElementById("trainingGoal").value;
@@ -760,136 +486,19 @@ function updateWorkoutPlan() {
 
     let text = "";
     if (goal === "fatloss") {
-        text = `
-            <strong>Fat Loss Plan:</strong><br>
-            • 3–4 days/week full-body strength<br>
-            • 20–30 min cardio<br>
-            • Compound lifts<br>
-            • High protein, slight deficit
-        `;
+        text = "<strong>Fat Loss Plan:</strong><br>3–4 days/week full-body strength<br>20–30 min cardio<br>Compound lifts<br>High protein, slight deficit";
     } else if (goal === "muscle") {
-        text = `
-            <strong>Muscle Gain Plan:</strong><br>
-            • 4–5 days/week split training<br>
-            • Heavy compound lifts<br>
-            • High volume<br>
-            • Slight calorie surplus
-        `;
+        text = "<strong>Muscle Gain Plan:</strong><br>4–5 days/week split training<br>Heavy compound lifts<br>High volume<br>Slight calorie surplus";
     } else if (goal === "recomp") {
-        text = `
-            <strong>Recomposition Plan:</strong><br>
-            • 3–4 days strength<br>
-            • 2–3 days cardio<br>
-            • Mix intensity & volume<br>
-            • Maintenance calories
-        `;
-    } else {
-        text = "";
+        text = "<strong>Body Recomposition Plan:</strong><br>3–4 days strength<br>2–3 days cardio<br>Mix intensity & volume<br>Maintenance calories";
     }
 
     planDiv.innerHTML = text;
 }
 
 /* ============================================================
-   EVENT LISTENERS
+   NUTRITION CALCULATOR
    ============================================================ */
-
-["height","currentWeight","desiredWeight","sessionsPerWeek","sessionLength","bodyFat","musclePercent"]
-    .forEach(id => {
-        document.getElementById(id).addEventListener("input", updateBodyMetrics);
-    });
-
-document.getElementById("sessionLength").addEventListener("change", updateBodyMetrics);
-document.getElementById("trainingGoal").addEventListener("change", updateWorkoutPlan);
-    ["sex","age","height","currentWeight","activityLevel","trainingGoal"]
-    .forEach(id => {
-        document.getElementById(id).addEventListener("input", updateNutrition);
-        document.getElementById(id).addEventListener("change", updateNutrition);
-    });
-
-
-/* ============================================================
-   WEEKLY EVALUATION ENGINE
-   ============================================================ */
-
-function renderWeeklyPanel() {
-    const panel = document.getElementById("weeklyPanel");
-    const selector = document.getElementById("weeklySelector");
-    panel.innerHTML = "";
-
-    const weekIndex = parseInt(selector.value);
-    if (isNaN(weekIndex) || !currentClient) return;
-
-    const clientWeekly = clients[currentClient].weekly || [];
-    if (!clientWeekly[weekIndex]) return;
-
-    const data = clientWeekly[weekIndex];
-
-    panel.innerHTML = `
-        <table>
-            <tr><th>Week Label</th><td>${data.label}</td></tr>
-            <tr><th>Sessions Scheduled</th><td><input id="w_sessionsScheduled" type="number" value="${data.sessionsScheduled || ""}"></td></tr>
-            <tr><th>Sessions Attended</th><td><input id="w_sessionsAttended" type="number" value="${data.sessionsAttended || ""}"></td></tr>
-            <tr><th>Notes</th><td><textarea id="w_notes">${data.notes || ""}</textarea></td></tr>
-        </table>
-        <button id="w_saveBtn">Save Weekly Data</button>
-    `;
-
-    document.getElementById("w_saveBtn").addEventListener("click", () => {
-        data.sessionsScheduled = parseFloat(document.getElementById("w_sessionsScheduled").value) || 0;
-        data.sessionsAttended = parseFloat(document.getElementById("w_sessionsAttended").value) || 0;
-        data.notes = document.getElementById("w_notes").value;
-
-        clients[currentClient].weekly[weekIndex] = data;
-        localStorage.setItem("crunchClients", JSON.stringify(clients));
-        updateAttendanceSummary();
-        updateChart();
-    });
-}
-
-function generateWeeks(count = 4) {
-    if (!currentClient) return;
-
-    if (!clients[currentClient].weekly) {
-        clients[currentClient].weekly = [];
-    }
-
-    const existing = clients[currentClient].weekly.length;
-    for (let i = existing; i < existing + count; i++) {
-        clients[currentClient].weekly.push({
-            label: `Week ${i + 1}`,
-            sessionsScheduled: 0,
-            sessionsAttended: 0,
-            notes: ""
-        });
-    }
-
-    const selector = document.getElementById("weeklySelector");
-    selector.innerHTML = "";
-    clients[currentClient].weekly.forEach((w, idx) => {
-        const opt = document.createElement("option");
-        opt.value = idx;
-        opt.textContent = w.label;
-        selector.appendChild(opt);
-    });
-
-    selector.value = clients[currentClient].weekly.length - 1;
-    renderWeeklyPanel();
-}
-
-document.getElementById("generateWeeksBtn").addEventListener("click", () => {
-    generateWeeks(4);
-});
-
-document.getElementById("addWeekBtn").addEventListener("click", () => {
-    generateWeeks(1);
-});
-
-document.getElementById("weeklySelector").addEventListener("change", renderWeeklyPanel);
-/* ============================================================
-   NUTRITION CALCULATOR ENGINE
-   ============================================================ */
-
 function updateNutrition() {
     const sex = document.getElementById("sex").value;
     const age = parseFloat(document.getElementById("age").value) || 0;
@@ -900,7 +509,6 @@ function updateNutrition() {
 
     if (!sex || !age || !height || !weight || !activity) return;
 
-    // BMR (Mifflin-St Jeor)
     let bmr = 0;
     if (sex === "male") {
         bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) + 5;
@@ -908,7 +516,6 @@ function updateNutrition() {
         bmr = (10 * weight) + (6.25 * (height * 2.54)) - (5 * age) - 161;
     }
 
-    // Activity multiplier
     const activityMap = {
         sedentary: 1.2,
         light: 1.375,
@@ -919,17 +526,14 @@ function updateNutrition() {
 
     const tdee = bmr * (activityMap[activity] || 1.2);
 
-    // Goal adjustment
     let targetCalories = tdee;
     if (goal === "fatloss") targetCalories -= 300;
     if (goal === "muscle") targetCalories += 300;
 
-    // Macros
     const protein = weight * 0.8;
     const fats = (targetCalories * 0.25) / 9;
     const carbs = (targetCalories - (protein * 4) - (fats * 9)) / 4;
 
-    // Output
     document.getElementById("bmrOutput").textContent = Math.round(bmr);
     document.getElementById("tdeeOutput").textContent = Math.round(tdee);
     document.getElementById("calorieTargetOutput").textContent = Math.round(targetCalories);
@@ -937,223 +541,121 @@ function updateNutrition() {
     document.getElementById("proteinTarget").textContent = Math.round(protein) + " g";
     document.getElementById("fatTarget").textContent = Math.round(fats) + " g";
     document.getElementById("carbTarget").textContent = Math.round(carbs) + " g";
+
+    let plan = "";
+    if (goal === "fatloss") {
+        plan = "Calorie deficit with high protein, moderate carbs, moderate fats.";
+    } else if (goal === "muscle") {
+        plan = "Slight surplus with high protein, higher carbs, moderate fats.";
+    } else {
+        plan = "Maintenance calories with balanced macros.";
+    }
+
+    document.getElementById("nutritionPlan").textContent = plan;
 }
 
 /* ============================================================
-   MONTHLY TRAINER NOTES ENGINE
+   WEEKLY EVALUATION
    ============================================================ */
-
-function renderMonthlyPanel() {
-    const panel = document.getElementById("monthlyPanel");
-    const selector = document.getElementById("monthlySelector");
-    panel.innerHTML = "";
-
-    const weekIndex = parseInt(selector.value);
-    if (isNaN(weekIndex) || !currentClient) return;
-
-    const clientMonthly = clients[currentClient].monthly || [];
-    if (!clientMonthly[weekIndex]) return;
-
-    const data = clientMonthly[weekIndex];
-
-    panel.innerHTML = `
-        <table>
-            <tr><th>Week Label</th><td>${data.label}</td></tr>
-            <tr><th>Focus</th><td><input id="m_focus" value="${data.focus || ""}"></td></tr>
-            <tr><th>Wins</th><td><textarea id="m_wins">${data.wins || ""}</textarea></td></tr>
-            <tr><th>Improvements</th><td><textarea id="m_improvements">${data.improvements || ""}</textarea></td></tr>
-        </table>
-        <button id="m_saveBtn">Save Monthly Notes</button>
-    `;
-
-    document.getElementById("m_saveBtn").addEventListener("click", () => {
-        data.focus = document.getElementById("m_focus").value;
-        data.wins = document.getElementById("m_wins").value;
-        data.improvements = document.getElementById("m_improvements").value;
-
-        clients[currentClient].monthly[weekIndex] = data;
-        localStorage.setItem("crunchClients", JSON.stringify(clients));
-    });
-}
-
-function generateMonthlyWeeks(count = 4) {
+function renderWeeklySelector() {
     if (!currentClient) return;
 
-    if (!clients[currentClient].monthly) {
-        clients[currentClient].monthly = [];
-    }
-
-    const existing = clients[currentClient].monthly.length;
-    for (let i = existing; i < existing + count; i++) {
-        clients[currentClient].monthly.push({
-            label: `Week ${i + 1}`,
-            focus: "",
-            wins: "",
-            improvements: ""
-        });
-    }
-
-    const selector = document.getElementById("monthlySelector");
+    const selector = document.getElementById("weeklySelector");
     selector.innerHTML = "";
-    clients[currentClient].monthly.forEach((w, idx) => {
+
+    const weekly = clients[currentClient].weekly || [];
+
+    weekly.forEach((w, idx) => {
         const opt = document.createElement("option");
         opt.value = idx;
         opt.textContent = w.label;
         selector.appendChild(opt);
     });
 
-    selector.value = clients[currentClient].monthly.length - 1;
-    renderMonthlyPanel();
+    if (weekly.length > 0) {
+        selector.value = weekly.length - 1;
+        renderWeeklyPanel();
+    } else {
+        document.getElementById("weeklyPanel").innerHTML = "";
+    }
 }
 
-document.getElementById("generateMonthlyBtn").addEventListener("click", () => {
-    generateMonthlyWeeks(4);
-});
+function renderWeeklyPanel() {
+    const panel = document.getElementById("weeklyPanel");
+    const selector = document.getElementById("weeklySelector");
 
-document.getElementById("addMonthlyWeekBtn").addEventListener("click", () => {
-    generateMonthlyWeeks(1);
-});
+    panel.innerHTML = "";
 
-document.getElementById("monthlySelector").addEventListener("change", renderMonthlyPanel);
+    const weekIndex = parseInt(selector.value);
+    if (isNaN(weekIndex) || !currentClient) return;
+
+    const weekly = clients[currentClient].weekly || [];
+    if (!weekly[weekIndex]) return;
+
+    const data = weekly[weekIndex];
+
+    panel.innerHTML = `
+        <table>
+            <tr><th>Week Label</th><td>${data.label}</td></tr>
+            <tr><th>Sessions Scheduled</th><td><input id="w_sessionsScheduled" type="number" value="${data.sessionsScheduled || ""}"></td></tr>
+            <tr><th>Sessions Attended</th><td><input id="w_sessionsAttended" type="number" value="${data.sessionsAttended || ""}"></td></tr>
+            <tr><th>Trainer Notes</th><td><textarea id="w_notes">${data.notes || ""}</textarea></td></tr>
+        </table>
+        <button id="w_saveBtn">Save Weekly Data</button>
+    `;
+
+    document.getElementById("w_saveBtn").addEventListener("click", () => {
+        data.sessionsScheduled = parseFloat(document.getElementById("w_sessionsScheduled").value) || 0;
+        data.sessionsAttended = parseFloat(document.getElementById("w_sessionsAttended").value) || 0;
+        data.notes = document.getElementById("w_notes").value;
+
+        weekly[weekIndex] = data;
+        clients[currentClient].weekly = weekly;
+
+        localStorage.setItem("evalClients", JSON.stringify(clients));
+
+        updateAttendanceSummary();
+        updateChart();
+    });
+}
+
+function generateWeeks(count = 4) {
+    if (!currentClient) return;
+
+    const weekly = clients[currentClient].weekly || [];
+    const existing = weekly.length;
+
+    for (let i = existing; i < existing + count; i++) {
+        weekly.push({
+            label: `Week ${i + 1}`,
+            sessionsScheduled: 0,
+            sessionsAttended: 0,
+            notes: ""
+        });
+    }
+
+    clients[currentClient].weekly = weekly;
+    localStorage.setItem("evalClients", JSON.stringify(clients));
+
+    renderWeeklySelector();
+}
+
+document.getElementById("generateWeeksBtn").addEventListener("click", () => generateWeeks(4));
+document.getElementById("addWeekBtn").addEventListener("click", () => generateWeeks(1));
+document.getElementById("weeklySelector").addEventListener("change", renderWeeklyPanel);
 
 /* ============================================================
-   ATTENDANCE SUMMARY ENGINE
+   ATTENDANCE SUMMARY
    ============================================================ */
-
 function updateAttendanceSummary() {
     if (!currentClient) return;
 
     const weekly = clients[currentClient].weekly || [];
+
     let totalScheduled = 0;
     let totalAttended = 0;
 
     weekly.forEach(w => {
         totalScheduled += w.sessionsScheduled || 0;
-        totalAttended += w.sessionsAttended || 0;
-    });
-
-    const percent = totalScheduled > 0
-        ? (totalAttended / totalScheduled) * 100
-        : 0;
-
-    document.getElementById("attendancePercent").textContent =
-        percent.toFixed(1) + "%";
-
-    document.getElementById("totalSessionsScheduled").textContent =
-        totalScheduled;
-
-    document.getElementById("totalSessionsAttended").textContent =
-        totalAttended;
-
-    let badge = "";
-    if (percent >= 90) badge = "🔥 Excellent";
-    else if (percent >= 75) badge = "💪 Good";
-    else if (percent >= 50) badge = "🙂 Fair";
-    else badge = "⚠ Needs Improvement";
-
-    document.getElementById("attendanceBadge").textContent = badge;
-}
-
-/* ============================================================
-   PROGRESS SCORE ENGINE
-   ============================================================ */
-
-document.getElementById("updateProgressBtn").addEventListener("click", () => {
-    const adherence = parseFloat(document.getElementById("adherence").value) || 0;
-    const effort = parseFloat(document.getElementById("effort").value) || 0;
-
-    const score = ((adherence + effort) / 20) * 100;
-
-    document.getElementById("progressScore").textContent =
-        score.toFixed(1) + "%";
-
-    let badge = "";
-    if (score >= 90) badge = "🏆 Outstanding";
-    else if (score >= 75) badge = "💪 Strong";
-    else if (score >= 50) badge = "🙂 Moderate";
-    else badge = "⚠ Low";
-
-    document.getElementById("progressBadge").textContent = badge;
-
-    if (currentClient) {
-        clients[currentClient].progress = {
-            adherence,
-            effort,
-            score,
-            badge
-        };
-        localStorage.setItem("crunchClients", JSON.stringify(clients));
-    }
-
-    updateChart();
-});
-
-/* ============================================================
-   PROGRESSION CHART
-   ============================================================ */
-
-let chartInstance = null;
-
-function updateChart() {
-    if (!currentClient) return;
-
-    const weekly = clients[currentClient].weekly || [];
-    const labels = weekly.map(w => w.label);
-    const attended = weekly.map(w => w.sessionsAttended || 0);
-
-    const ctx = document.getElementById("progressChart").getContext("2d");
-
-    if (chartInstance) chartInstance.destroy();
-
-    chartInstance = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels,
-            datasets: [{
-                label: "Sessions Attended",
-                data: attended,
-                borderColor: "#1f4e79",
-                backgroundColor: "rgba(31,78,121,0.2)",
-                borderWidth: 2,
-                tension: 0.3,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-}
-
-/* ============================================================
-   PDF EXPORT
-   ============================================================ */
-
-document.getElementById("exportPDFBtn").addEventListener("click", () => {
-    const element = document.body;
-    const opt = {
-        margin: 0.5,
-        filename: `${currentClient}_evaluation.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
-    };
-    html2pdf().set(opt).from(element).save();
-});
-
-/* ============================================================
-   FINALIZE SYSTEM
-   ============================================================ */
-
-updateDashboard();
-updateAttendanceSummary();
-updateChart();
-/* Close DOMContentLoaded wrapper */
-});
-</script>
-</body>
-</html>
+        totalAttended += w
 

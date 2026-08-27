@@ -658,4 +658,138 @@ function updateAttendanceSummary() {
     weekly.forEach(w => {
         totalScheduled += w.sessionsScheduled || 0;
         totalAttended += w
+        /* ============================================================
+   ATTENDANCE SUMMARY
+   ============================================================ */
+function updateAttendanceSummary() {
+    if (!currentClient) return;
+
+    const weekly = clients[currentClient].weekly || [];
+
+    let totalScheduled = 0;
+    let totalAttended = 0;
+
+    weekly.forEach(w => {
+        totalScheduled += w.sessionsScheduled || 0;
+        totalAttended += w.sessionsAttended || 0;
+    });
+
+    const percent = totalScheduled > 0 ? (totalAttended / totalScheduled) * 100 : 0;
+
+    document.getElementById("attendancePercent").textContent = percent.toFixed(1) + "%";
+    document.getElementById("totalSessionsScheduled").textContent = totalScheduled;
+    document.getElementById("totalSessionsAttended").textContent = totalAttended;
+
+    let badge = "";
+    if (percent >= 90) badge = "Excellent";
+    else if (percent >= 75) badge = "Good";
+    else if (percent >= 50) badge = "Fair";
+    else badge = "Needs Improvement";
+
+    document.getElementById("attendanceBadge").textContent = badge;
+}
+
+/* ============================================================
+   PROGRESS & CHART
+   ============================================================ */
+document.getElementById("updateProgressBtn").addEventListener("click", () => {
+    if (!currentClient) return;
+
+    const adherence = parseFloat(document.getElementById("adherence").value) || 0;
+    const effort = parseFloat(document.getElementById("effort").value) || 0;
+
+    const score = ((adherence + effort) / 20) * 100;
+
+    document.getElementById("progressScore").textContent = score.toFixed(1) + "%";
+
+    let badge = "";
+    if (score >= 90) badge = "Outstanding";
+    else if (score >= 75) badge = "Strong";
+    else if (score >= 50) badge = "Moderate";
+    else badge = "Low";
+
+    document.getElementById("progressBadge").textContent = badge;
+
+    clients[currentClient].progress = { adherence, effort, score, badge };
+    localStorage.setItem("evalClients", JSON.stringify(clients));
+
+    updateChart();
+});
+
+function updateChart() {
+    if (!currentClient) return;
+
+    const weekly = clients[currentClient].weekly || [];
+    const labels = weekly.map(w => w.label);
+    const attended = weekly.map(w => w.sessionsAttended || 0);
+
+    const ctx = document.getElementById("progressChart").getContext("2d");
+
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [{
+                label: "Sessions Attended",
+                data: attended,
+                borderColor: "#1f4e79",
+                backgroundColor: "rgba(31,78,121,0.2)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+}
+
+/* ============================================================
+   EVENT LISTENERS FOR METRICS & NUTRITION
+   ============================================================ */
+["height","currentWeight","desiredWeight","sessionsPerWeek","sessionLength"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+            updateBodyMetrics();
+            updateNutrition();
+        });
+    });
+
+["sex","age","activityLevel","trainingGoal"].forEach(id => {
+    document.getElementById(id).addEventListener("change", () => {
+        updateWorkoutPlan();
+        updateNutrition();
+    });
+});
+
+/* ============================================================
+   PDF EXPORT
+   ============================================================ */
+document.getElementById("exportPDFBtn").addEventListener("click", () => {
+    const element = document.body;
+
+    const opt = {
+        margin: 0.5,
+        filename: (currentClient || "evaluation") + "_evaluation.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
+    };
+
+    html2pdf().set(opt).from(element).save();
+});
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+refreshTrainerList();
+refreshClientList();
+</script>
+</body>
+</html>
+
 
